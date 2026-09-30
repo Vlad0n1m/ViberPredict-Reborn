@@ -89,7 +89,7 @@ export default function SettingsPage() {
         </span>
       </div>
 
-      <div className="flex items-center justify-between rounded-lg bg-devnet py-4 pl-5 pr-4">
+      <div className="flex items-center justify-between rounded-lg bg-devnet py-4 pl-5 pr-4 text-ink">
         <div className="flex flex-col gap-0.5">
           <span className="text-[13px] font-semibold">Devnet faucet</span>
           <span className="text-xs">1 test SOL, free</span>

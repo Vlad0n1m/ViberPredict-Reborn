@@ -77,11 +77,11 @@ export function Header() {
           </nav>
         </div>
         <div className="flex items-center gap-2">
-          <span className="hidden items-center gap-2 rounded-md bg-devnet px-3.5 py-2 text-sm font-semibold sm:flex">
+          <span className="hidden items-center gap-2 rounded-md bg-devnet px-3.5 py-2 text-sm font-bold text-ink sm:flex">
             <span className="live-dot h-2 w-2 bg-ink" />
             Devnet
           </span>
-          <Link href="/create" className="hidden rounded-md bg-flame px-4 py-2 text-sm font-semibold md:block">
+          <Link href="/create" className="hidden rounded-md bg-flame px-4 py-2 text-sm font-bold text-ink md:block">
             + Create
           </Link>
           <WalletButton />

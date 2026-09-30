@@ -86,7 +86,7 @@ export function BetPanel({ m }: { m: Market }) {
         type="button"
         disabled={!open || stake <= 0}
         onClick={() => (publicKey ? setSent(true) : openWallet())}
-        className="h-[60px] rounded-md bg-flame text-[17px] font-semibold transition-transform duration-150 active:scale-[0.98] disabled:opacity-40"
+        className="h-[60px] rounded-md bg-flame text-[17px] font-semibold text-ink transition-transform duration-150 active:scale-[0.98] disabled:opacity-40"
       >
         {!open ? "Betting closed" : !publicKey ? "Connect wallet to bet" : sent ? "Approve in your wallet…" : `Bet ${stake.toFixed(2)} SOL on ${side === "yes" ? "Yes" : "No"}`}
       </button>

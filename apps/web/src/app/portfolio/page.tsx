@@ -12,7 +12,7 @@ export default function PortfolioPage() {
       <h1 className="mb-2 font-display text-[40px] font-extrabold leading-none tracking-tighter sm:text-6xl">Your bets</h1>
 
       {won && wonMarket && (
-        <div className="flex flex-col gap-3.5 rounded-lg bg-flame p-5">
+        <div className="flex flex-col gap-3.5 rounded-lg bg-flame p-5 text-ink">
           <div className="flex items-start justify-between">
             <div className="flex flex-col gap-0.5">
               <span className="text-xs font-semibold">You won</span>

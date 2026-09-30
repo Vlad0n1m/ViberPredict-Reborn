@@ -82,7 +82,7 @@ export default function CreatePage() {
         type="button"
         disabled={q.trim().length < 10}
         onClick={() => (publicKey ? setSent(true) : openWallet())}
-        className="mt-2 h-[60px] rounded-md bg-flame text-[17px] font-semibold transition-transform duration-150 active:scale-[0.98] disabled:opacity-40"
+        className="mt-2 h-[60px] rounded-md bg-flame text-[17px] font-semibold text-ink transition-transform duration-150 active:scale-[0.98] disabled:opacity-40"
       >
         {!publicKey ? "Connect wallet to launch" : sent ? "Approve in your wallet…" : "Launch market"}
       </button>

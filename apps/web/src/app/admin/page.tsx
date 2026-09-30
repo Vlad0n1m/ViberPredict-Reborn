@@ -272,7 +272,7 @@ export default function AdminPage() {
 
 function Tile({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
   return (
-    <div className={`anim-rise flex flex-col gap-1 rounded-lg p-4 sm:p-5 ${accent ? "bg-devnet" : "bg-card"}`}>
+    <div className={`anim-rise flex flex-col gap-1 rounded-lg p-4 sm:p-5 ${accent ? "bg-devnet text-ink" : "bg-card"}`}>
       <span className={`text-xs ${accent ? "" : "text-muted"}`}>{label}</span>
       <span className="font-display text-2xl font-extrabold tracking-tight tabular-nums sm:text-3xl">{value}</span>
     </div>

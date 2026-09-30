@@ -87,7 +87,7 @@ export default function Home() {
         </Link>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-          <Link href={`/market/${hackathon[0]?.id ?? featured.id}`} className="relative flex min-h-[220px] flex-col gap-3 overflow-hidden rounded-lg bg-flame p-6 sm:rounded-lg">
+          <Link href={`/market/${hackathon[0]?.id ?? featured.id}`} className="relative flex min-h-[220px] flex-col gap-3 overflow-hidden rounded-lg bg-flame p-6 text-ink sm:rounded-lg">
             <svg width="160" height="160" viewBox="0 0 160 160" className="absolute -right-8 -top-8" aria-hidden>
               <circle cx="80" cy="80" r="70" fill="none" stroke="#0C0A09" strokeWidth="2" strokeDasharray="6 8" />
               <circle cx="80" cy="80" r="40" fill="#0C0A09" />
@@ -107,11 +107,11 @@ export default function Home() {
               </div>
             </div>
           </Link>
-          <Link href={`/market/${snow.id}`} className="relative flex min-h-[170px] flex-col gap-2 overflow-hidden rounded-lg bg-yes px-6 py-5 text-white sm:rounded-lg">
+          <Link href={`/market/${snow.id}`} className="relative flex min-h-[170px] flex-col gap-2 overflow-hidden rounded-lg bg-yes px-6 py-5 text-ink sm:rounded-lg">
             <svg width="140" height="140" viewBox="0 0 140 140" className="absolute -bottom-10 -right-5" aria-hidden>
-              <path d="M70 10l12 40h40l-32 24 12 40-32-24-32 24 12-40-32-24h40z" fill="none" stroke="#FFFFFF" strokeOpacity="0.5" strokeWidth="2" />
+              <path d="M70 10l12 40h40l-32 24 12 40-32-24-32 24 12-40-32-24h40z" fill="none" stroke="#0C0A09" strokeOpacity="0.35" strokeWidth="2" />
             </svg>
-            <span className="text-xs font-bold tracking-wide text-flame">ASTANA · WEATHER</span>
+            <span className="text-xs font-black tracking-wide text-ink/70">ASTANA · WEATHER</span>
             <p className="max-w-[250px] font-display text-2xl font-extrabold leading-tight tracking-tight">First snow before Oct 15?</p>
             <span className="mt-auto font-mono text-sm">{chance(snow)}% yes · {sol(total(snow), 1)} SOL</span>
           </Link>
@@ -160,7 +160,7 @@ function Filtered({ cat }: { cat: string }) {
       {list.length === 0 ? (
         <div className="anim-rise flex flex-col items-start gap-3 rounded-lg bg-card p-6">
           <p className="font-display text-xl font-bold">No {cat} markets yet.</p>
-          <Link href="/create" className="rounded-md bg-flame px-4 py-2 text-sm font-semibold">
+          <Link href="/create" className="rounded-md bg-flame px-4 py-2 text-sm font-semibold text-ink">
             Create the first one
           </Link>
         </div>

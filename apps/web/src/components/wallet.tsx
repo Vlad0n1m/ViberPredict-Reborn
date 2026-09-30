@@ -136,13 +136,13 @@ export function WalletButton() {
 
   if (!publicKey) {
     return (
-      <button type="button" onClick={open} className="rounded-md bg-ink px-4 py-2 text-sm font-semibold text-white transition-transform duration-150 active:scale-[0.97]">
+      <button type="button" onClick={open} className="rounded-md bg-fg px-4 py-2 text-sm font-bold text-ink transition-transform duration-150 active:scale-[0.97]">
         Connect
       </button>
     );
   }
   return (
-    <a href="/settings" className="flex items-center gap-2 rounded-md bg-ink px-3.5 py-2 font-mono text-xs text-white sm:px-4 sm:text-sm">
+    <a href="/settings" className="flex items-center gap-2 rounded-md border border-flame/50 bg-card px-3.5 py-2 font-mono text-xs text-fg sm:px-4 sm:text-sm">
       <span className="live-dot h-1.5 w-1.5 bg-flame" />
       <span className="hidden sm:inline">{short(publicKey.toBase58())} · </span>
       {balance === null ? "…" : balance.toFixed(2)} SOL
