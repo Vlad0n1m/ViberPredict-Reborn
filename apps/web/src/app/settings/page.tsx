@@ -34,7 +34,7 @@ export default function SettingsPage() {
 
   return (
     <main className="mx-auto flex w-full max-w-xl flex-col gap-3 px-4 pt-4 sm:pt-8">
-      <h1 className="mb-2 font-display text-[40px] font-extrabold leading-none tracking-tighter sm:text-6xl">Settings</h1>
+      <h1 className="mb-2 font-display text-3xl font-bold leading-none tracking-tight sm:text-4xl">Settings</h1>
 
       <div className="flex flex-col gap-3.5 rounded-lg bg-ink p-5 text-white">
         {addr ? (
@@ -43,7 +43,7 @@ export default function SettingsPage() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               {wallet && <img src={wallet.adapter.icon} alt="" width={44} height={44} className="rounded-full bg-white p-1.5" />}
               <div className="flex flex-1 flex-col gap-0.5">
-                <span className="flex items-center gap-1.5 text-xs text-[#A8988C]">
+                <span className="flex items-center gap-1.5 text-xs text-[#8A847D]">
                   <span className="live-dot h-1.5 w-1.5 bg-flame" />
                   {wallet?.adapter.name === "Mobile Wallet Adapter" ? "Seed Vault / mobile wallet" : wallet?.adapter.name}
                 </span>
@@ -58,11 +58,11 @@ export default function SettingsPage() {
                   await navigator.clipboard.writeText(addr).catch(() => {});
                   setNote("Address copied.");
                 }}
-                className="h-11 rounded-md border border-[#3A2C26] text-sm"
+                className="h-11 rounded-md border border-[#2F2B28] text-sm"
               >
                 Copy address
               </button>
-              <button type="button" onClick={() => disconnect()} className="h-11 rounded-md border border-[#3A2C26] text-sm text-[#FF7A8F]">
+              <button type="button" onClick={() => disconnect()} className="h-11 rounded-md border border-[#2F2B28] text-sm text-no">
                 Disconnect
               </button>
             </div>
@@ -70,7 +70,7 @@ export default function SettingsPage() {
         ) : (
           <>
             <p className="font-display text-2xl font-bold">No wallet connected</p>
-            <p className="text-sm text-[#A8988C]">Phantom on desktop, Seed Vault or Phantom on Seeker.</p>
+            <p className="text-sm text-[#8A847D]">Phantom on desktop, Seed Vault or Phantom on Seeker.</p>
             <button type="button" onClick={open} className="h-12 rounded-md bg-flame text-[15px] font-semibold text-ink">
               Connect wallet
             </button>
@@ -89,16 +89,16 @@ export default function SettingsPage() {
         </span>
       </div>
 
-      <div className="flex items-center justify-between rounded-lg bg-devnet py-4 pl-5 pr-4 text-ink">
+      <div className="flex items-center justify-between rounded-xl bg-card py-4 pl-5 pr-4">
         <div className="flex flex-col gap-0.5">
           <span className="text-[13px] font-semibold">Devnet faucet</span>
-          <span className="text-xs">1 test SOL, free</span>
+          <span className="text-xs text-muted">1 test SOL, free</span>
         </div>
         <button
           type="button"
           onClick={airdrop}
           disabled={dropping}
-          className="flex h-11 items-center gap-2 rounded-md bg-ink px-5 text-sm font-semibold text-white disabled:opacity-60"
+          className="flex h-10 items-center gap-2 rounded-lg border border-line px-4 text-sm font-semibold disabled:opacity-60"
         >
           {dropping && <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white border-t-transparent" />}
           Airdrop

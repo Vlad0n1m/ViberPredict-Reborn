@@ -84,11 +84,10 @@ Neon: `DATABASE_URL` env var (Vercel Marketplace → Neon). Tables are created o
 
 ## Design (Reborn)
 
-Dark "ash & ember" theme: page `#0C0A09`, cards `#171210`, text `#F5EDE4`.
-Flame accent `#FFB02E` (CTA, active states), YES emerald `#22D39A`, NO rose `#FF4D6A`, devnet cyan `#38D6F5`.
-Fonts: Unbounded (headings, numbers), Manrope (text), JetBrains Mono (SOL, odds, addresses). Sharp 6–8px radii, ash grid background.
+Warm monochrome, dark-native: page `#0E0D0C`, cards `#161413`, hairlines `#262321`, text `#EDE9E4`, muted `#8A847D`.
+One accent: ember `#FF8A3D` (primary CTA, active tab, charts). YES `#3FCF8E` / NO `#F2555A` only for odds.
+Fonts: Manrope (everything, 3 weights), JetBrains Mono (numbers, SOL, addresses). Radius by role: cards 12px, controls 8px, chips 6px. No gradients, glows or decorative motion.
 Logo: phoenix mark (`public/mark.svg`, source in `src/lib/brand.ts`); PNG lockup at `/logo`.
-Top ticker: "We are back to business!".
 
 ## Run locally
 

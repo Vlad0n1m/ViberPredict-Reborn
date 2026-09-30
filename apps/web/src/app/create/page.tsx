@@ -39,7 +39,7 @@ export default function CreatePage() {
 
   return (
     <main className="mx-auto flex w-full max-w-xl flex-col gap-4 px-4 pt-4 sm:pt-8">
-      <h1 className="font-display text-[40px] font-extrabold leading-none tracking-tighter sm:text-6xl">
+      <h1 className="font-display text-3xl font-bold leading-none tracking-tight sm:text-4xl">
         Ask the
         <br />
         crowd.

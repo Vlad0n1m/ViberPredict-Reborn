@@ -83,7 +83,7 @@ function WalletModal({ children }: { children: ReactNode }) {
             className="anim-rise flex w-full max-w-md flex-col gap-3 rounded-t-[30px] bg-card p-5 pb-8 sm:rounded-lg sm:pb-5"
           >
             <div className="flex items-center justify-between">
-              <h2 className="font-display text-2xl font-extrabold tracking-tight">Connect wallet</h2>
+              <h2 className="font-display text-2xl font-bold tracking-tight">Connect wallet</h2>
               <button type="button" aria-label="Close" onClick={() => setOpen(false)} className="flex h-10 w-10 items-center justify-center rounded-md bg-paper">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden>
                   <path d="M5 5l14 14M19 5L5 19" />
@@ -112,7 +112,7 @@ function WalletModal({ children }: { children: ReactNode }) {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={w.adapter.icon} alt="" width={32} height={32} className="rounded-lg" />
                   <span className="flex-1 font-semibold">{label(w.adapter.name)}</span>
-                  <span className={`text-xs ${ready ? "text-[#3BE3A5]" : "text-muted"}`}>
+                  <span className={`text-xs ${ready ? "text-yes" : "text-muted"}`}>
                     {connecting ? "Connecting…" : ready ? (w.readyState === WalletReadyState.Installed ? "Detected" : "Tap to open") : "Install"}
                   </span>
                 </button>
@@ -141,14 +141,14 @@ export function WalletButton() {
 
   if (!publicKey) {
     return (
-      <button type="button" onClick={open} className="rounded-md bg-fg px-4 py-2 text-sm font-bold text-ink transition-transform duration-150 active:scale-[0.97]">
+      <button type="button" onClick={open} className="rounded-lg border border-line px-3.5 py-1.5 text-sm font-semibold text-fg transition-colors duration-150 hover:bg-card active:scale-[0.97]">
         Connect
       </button>
     );
   }
   return (
-    <a href="/settings" className="flex items-center gap-2 rounded-md border border-flame/50 bg-card px-3.5 py-2 font-mono text-xs text-fg sm:px-4 sm:text-sm">
-      <span className="live-dot h-1.5 w-1.5 bg-flame" />
+    <a href="/settings" className="flex items-center gap-2 rounded-lg border border-line px-3 py-1.5 font-mono text-xs text-fg transition-colors duration-150 hover:bg-card">
+      <span className="h-1.5 w-1.5 rounded-full bg-yes" />
       <span className="hidden sm:inline">{short(publicKey.toBase58())} · </span>
       {balance === null ? "…" : balance.toFixed(2)} SOL
     </a>

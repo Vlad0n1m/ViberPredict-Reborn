@@ -38,20 +38,20 @@ export function BetPanel({ m }: { m: Market }) {
   }
 
   return (
-    <aside className="flex flex-col gap-4 rounded-lg bg-card p-5 sm:p-6 lg:sticky lg:top-24">
-      <h2 className="font-display text-[22px] font-bold tracking-tight">Place a bet</h2>
-      <div className="grid grid-cols-2 gap-1.5 rounded-lg bg-paper p-1.5">
+    <aside className="flex flex-col gap-4 rounded-xl bg-card p-5 sm:p-6 lg:sticky lg:top-20">
+      <h2 className="text-base font-semibold">Place a bet</h2>
+      <div className="grid grid-cols-2 gap-1 rounded-lg bg-paper p-1">
         {(["yes", "no"] as const).map((s) => {
           const active = side === s;
-          const on = s === "yes" ? "bg-yes text-ink" : "bg-no text-ink";
-          const off = s === "yes" ? "text-yes" : "text-no";
+          const on = s === "yes" ? "bg-yes-soft text-yes ring-1 ring-yes/40" : "bg-no-soft text-no ring-1 ring-no/40";
+          const off = "text-muted hover:text-fg";
           return (
             <button
               key={s}
               type="button"
               onClick={() => setSide(s)}
               aria-pressed={active}
-              className={`h-14 rounded-md text-base font-semibold transition-colors duration-150 ${active ? on : off}`}
+              className={`h-12 rounded-md text-sm font-semibold transition-colors duration-150 ${active ? on : off}`}
             >
               {s === "yes" ? "Yes" : "No"} · {multiplier(m, s) ? `${multiplier(m, s).toFixed(2)}×` : "—"}
             </button>
@@ -64,13 +64,13 @@ export function BetPanel({ m }: { m: Market }) {
           <label htmlFor="amount">Amount</label>
           {publicKey && <span className="font-mono">balance {balance === null ? "…" : balance.toFixed(3)} SOL</span>}
         </div>
-        <div className={`flex h-16 items-center gap-2 rounded-lg border-2 px-4 ${bad ? "border-no" : "border-fg"}`}>
+        <div className={`flex h-14 items-center gap-2 rounded-lg border px-4 transition-colors duration-150 focus-within:border-muted ${bad ? "border-no" : "border-line"}`}>
           <input
             id="amount"
             inputMode="decimal"
             value={amount}
             onChange={(e) => setAmount(e.target.value.replace(",", "."))}
-            className="w-full min-w-0 bg-transparent font-mono text-[28px] outline-none"
+            className="w-full min-w-0 bg-transparent font-mono text-2xl outline-none"
           />
           <span className="text-[15px] text-muted">SOL</span>
         </div>
@@ -79,7 +79,7 @@ export function BetPanel({ m }: { m: Market }) {
           {["0.01", "0.05", "0.1", "0.5"].map((v) => {
             const active = raw === Number.parseFloat(v);
             return (
-              <button key={v} type="button" onClick={() => setAmount(v)} className={`h-10 rounded-md ${active ? "bg-flame text-ink" : "bg-paper"}`}>
+              <button key={v} type="button" onClick={() => setAmount(v)} className={`h-9 rounded-md transition-colors duration-150 ${active ? "bg-line text-fg" : "text-muted hover:text-fg"}`}>
                 {v}
               </button>
             );
@@ -94,7 +94,7 @@ export function BetPanel({ m }: { m: Market }) {
         </div>
         <div className="flex justify-between">
           <span className="text-muted">Network</span>
-          <span className="font-medium text-devnet">Devnet · real test SOL</span>
+          <span className="font-medium text-muted">Devnet · real test SOL</span>
         </div>
       </div>
 
@@ -102,7 +102,7 @@ export function BetPanel({ m }: { m: Market }) {
         type="button"
         disabled={!open || stake <= 0 || bad || status.kind === "signing"}
         onClick={bet}
-        className="flex h-[60px] items-center justify-center gap-2 rounded-md bg-flame text-[17px] font-semibold text-ink transition-transform duration-150 active:scale-[0.98] disabled:opacity-40"
+        className="flex h-12 items-center justify-center gap-2 rounded-lg bg-flame text-[15px] font-semibold text-ink transition-transform duration-150 active:scale-[0.98] disabled:opacity-40"
       >
         {status.kind === "signing" && <span className="h-4 w-4 animate-spin rounded-full border-2 border-ink border-t-transparent" />}
         {!open
@@ -117,7 +117,7 @@ export function BetPanel({ m }: { m: Market }) {
       {status.kind === "ok" && (
         <div className="anim-rise flex flex-col gap-1 rounded-md bg-yes-soft px-4 py-3 text-sm">
           <span className="font-semibold text-yes">✓ Confirmed on devnet</span>
-          <span className="text-[#CFC2B6]">{status.text}</span>
+          <span className="text-[#BDB7B0]">{status.text}</span>
           <a href={solscanTx(status.sig)} target="_blank" rel="noreferrer" className="font-mono text-xs text-flame underline underline-offset-2">
             View on Solscan → {status.sig.slice(0, 10)}…
           </a>

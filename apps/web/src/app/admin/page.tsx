@@ -9,8 +9,8 @@ type Row = Market;
 type Filter = "all" | MarketStatus;
 
 const statusStyle: Record<MarketStatus, { label: string; dot: string; chip: string }> = {
-  active: { label: "Active", dot: "bg-[#22D39A]", chip: "bg-[#0F2A20] text-[#3BE3A5]" },
-  awaiting: { label: "To resolve", dot: "bg-devnet", chip: "bg-[#2B2110] text-[#FFC53D]" },
+  active: { label: "Active", dot: "bg-[#3FCF8E]", chip: "bg-[#14231C] text-yes" },
+  awaiting: { label: "To resolve", dot: "bg-devnet", chip: "bg-[#2A1F16] text-[#FF8A3D]" },
   resolved: { label: "Resolved", dot: "bg-muted", chip: "bg-paper text-muted" },
 };
 
@@ -68,19 +68,19 @@ export default function AdminPage() {
     <main className="mx-auto flex w-full max-w-[1344px] flex-col gap-5 px-4 pt-4 sm:px-8 sm:pt-8 lg:px-12">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="flex flex-col gap-2">
-          <h1 className="font-display text-[40px] font-extrabold leading-none tracking-tighter sm:text-6xl">Admin</h1>
+          <h1 className="font-display text-3xl font-bold leading-none tracking-tight sm:text-4xl">Admin</h1>
           <p className="font-mono text-xs text-muted">program HqSA…Jqa · devnet · admin {config ? `${config.admin.slice(0, 4)}…${config.admin.slice(-4)}` : "…"}</p>
         </div>
         <div className="flex flex-wrap gap-2 text-[13px] font-medium">
           <span className="flex items-center gap-2 rounded-md bg-card px-3.5 py-2">
-            <span className={`live-dot h-2 w-2 $bg-[#22D39A]`} />
+            <span className={`live-dot h-2 w-2 $bg-[#3FCF8E]`} />
             On-chain · devnet
           </span>
           <span className="flex items-center gap-2 rounded-md bg-card px-3.5 py-2">
-            <span className={`live-dot h-2 w-2 ${config?.paused ? "bg-no" : "bg-[#22D39A]"}`} />
+            <span className={`live-dot h-2 w-2 ${config?.paused ? "bg-no" : "bg-[#3FCF8E]"}`} />
             {config?.paused ? "Program paused" : "Program live"}
           </span>
-          <span className={`flex items-center gap-2 rounded-md px-3.5 py-2 ${isAdmin ? "bg-ink text-white" : "bg-no-soft text-[#FF8A9C]"}`}>
+          <span className={`flex items-center gap-2 rounded-md px-3.5 py-2 ${isAdmin ? "bg-ink text-white" : "bg-no-soft text-no"}`}>
             {isAdmin ? `Signed in as admin · ${me!.slice(0, 4)}…${me!.slice(-4)}` : "Connect the admin wallet"}
           </span>
         </div>
@@ -96,7 +96,7 @@ export default function AdminPage() {
       <section className="grid gap-4 lg:grid-cols-[1fr_400px]">
         <div className="flex flex-col gap-3 rounded-lg bg-card p-5">
           <div className="flex items-baseline justify-between">
-            <h2 className="font-display text-xl font-extrabold tracking-tight">Resolution queue</h2>
+            <h2 className="font-display text-xl font-bold tracking-tight">Resolution queue</h2>
             <span className="text-xs text-muted">closed markets waiting for an outcome</span>
           </div>
           {queue.length === 0 ? (
@@ -127,8 +127,8 @@ export default function AdminPage() {
         </div>
 
         <div className="flex flex-col gap-4 rounded-lg bg-ink p-5 text-white">
-          <h2 className="font-display text-xl font-extrabold tracking-tight">Program constants</h2>
-          <p className="-mt-2 text-xs text-[#A8988C]">Compiled into the on-chain program. Changing them means a redeploy.</p>
+          <h2 className="font-display text-xl font-bold tracking-tight">Program constants</h2>
+          <p className="-mt-2 text-xs text-[#8A847D]">Compiled into the on-chain program. Changing them means a redeploy.</p>
           {draft && (
             <>
               <Field label="Fee, basis points" hint={`${(draft.feeBps / 100).toFixed(2)}% — half to creator, half to treasury`}>
@@ -138,7 +138,7 @@ export default function AdminPage() {
                   max={1000}
                   value={draft.feeBps}
                   onChange={(e) => setDraft({ ...draft, feeBps: Number(e.target.value) })}
-                  className="h-11 w-full rounded-xl bg-[#241B17] px-3 font-mono outline-none focus:ring-2 focus:ring-flame"
+                  className="h-11 w-full rounded-xl bg-[#1F1C1A] px-3 font-mono outline-none focus:ring-2 focus:ring-flame"
                 />
               </Field>
               <Field label="Max bet, SOL" hint="Per transaction cap">
@@ -148,14 +148,14 @@ export default function AdminPage() {
                   min={0}
                   value={draft.maxBetSol}
                   onChange={(e) => setDraft({ ...draft, maxBetSol: Number(e.target.value) })}
-                  className="h-11 w-full rounded-xl bg-[#241B17] px-3 font-mono outline-none focus:ring-2 focus:ring-flame"
+                  className="h-11 w-full rounded-xl bg-[#1F1C1A] px-3 font-mono outline-none focus:ring-2 focus:ring-flame"
                 />
               </Field>
               <Field label="Treasury" hint="Receives the treasury half of fees">
                 <input
                   value={draft.treasury}
                   onChange={(e) => setDraft({ ...draft, treasury: e.target.value.trim() })}
-                  className="h-11 w-full rounded-xl bg-[#241B17] px-3 font-mono text-xs outline-none focus:ring-2 focus:ring-flame"
+                  className="h-11 w-full rounded-xl bg-[#1F1C1A] px-3 font-mono text-xs outline-none focus:ring-2 focus:ring-flame"
                 />
               </Field>
               <button
@@ -163,18 +163,18 @@ export default function AdminPage() {
                 role="switch"
                 aria-checked={draft.paused}
                 onClick={() => setDraft({ ...draft, paused: !draft.paused })}
-                className="flex items-center justify-between rounded-md bg-[#241B17] px-4 py-3 text-left"
+                className="flex items-center justify-between rounded-md bg-[#1F1C1A] px-4 py-3 text-left"
               >
                 <span className="flex flex-col">
                   <span className="text-sm font-semibold">Pause program</span>
-                  <span className="text-xs text-[#A8988C]">Blocks new markets and bets. Claims stay open.</span>
+                  <span className="text-xs text-[#8A847D]">Blocks new markets and bets. Claims stay open.</span>
                 </span>
-                <span className={`relative h-7 w-12 shrink-0 rounded-md transition-colors duration-200 ${draft.paused ? "bg-no" : "bg-[#3A2C26]"}`}>
+                <span className={`relative h-7 w-12 shrink-0 rounded-md transition-colors duration-200 ${draft.paused ? "bg-no" : "bg-[#2F2B28]"}`}>
                   <span className={`absolute top-1 h-5 w-5 rounded-full bg-white transition-transform duration-200 ${draft.paused ? "translate-x-6" : "translate-x-1"}`} />
                 </span>
               </button>
               <div className="grid grid-cols-2 gap-2">
-                <button type="button" disabled={!dirty} onClick={() => setDraft(config)} className="h-11 rounded-md border border-[#3A2C26] text-sm disabled:opacity-40">
+                <button type="button" disabled={!dirty} onClick={() => setDraft(config)} className="h-11 rounded-md border border-[#2F2B28] text-sm disabled:opacity-40">
                   Reset
                 </button>
                 <Btn
@@ -193,7 +193,7 @@ export default function AdminPage() {
 
       <section className="flex flex-col gap-3 rounded-lg bg-card p-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="font-display text-xl font-extrabold tracking-tight">All markets</h2>
+          <h2 className="font-display text-xl font-bold tracking-tight">All markets</h2>
           <div className="flex flex-wrap gap-2">
             <input
               value={query}
@@ -274,9 +274,9 @@ export default function AdminPage() {
 
 function Tile({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
   return (
-    <div className={`anim-rise flex flex-col gap-1 rounded-lg p-4 sm:p-5 ${accent ? "bg-devnet text-ink" : "bg-card"}`}>
+    <div className={`anim-rise flex flex-col gap-1 rounded-lg p-4 sm:p-5 ${accent ? "bg-card ring-1 ring-flame/50" : "bg-card"}`}>
       <span className={`text-xs ${accent ? "" : "text-muted"}`}>{label}</span>
-      <span className="font-display text-2xl font-extrabold tracking-tight tabular-nums sm:text-3xl">{value}</span>
+      <span className="font-display text-2xl font-bold tracking-tight tabular-nums sm:text-3xl">{value}</span>
     </div>
   );
 }
@@ -284,7 +284,7 @@ function Tile({ label, value, accent }: { label: string; value: string; accent?:
 function Field({ label, hint, children }: { label: string; hint: string; children: React.ReactNode }) {
   return (
     <label className="flex flex-col gap-1.5">
-      <span className="text-xs text-[#A8988C]">{label}</span>
+      <span className="text-xs text-[#8A847D]">{label}</span>
       {children}
       <span className="text-[11px] text-[#6F625A]">{hint}</span>
     </label>

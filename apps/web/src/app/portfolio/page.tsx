@@ -59,7 +59,7 @@ export default function PortfolioPage() {
 function Shell({ children }: { children: React.ReactNode }) {
   return (
     <main className="mx-auto flex w-full max-w-xl flex-col gap-2.5 px-4 pt-4 sm:pt-8">
-      <h1 className="mb-2 font-display text-[40px] font-extrabold leading-none tracking-tighter sm:text-6xl">Your bets</h1>
+      <h1 className="mb-2 font-display text-3xl font-bold leading-none tracking-tight sm:text-4xl">Your bets</h1>
       {children}
     </main>
   );
@@ -93,7 +93,7 @@ function ClaimCard({ p }: { p: PositionRow }) {
       <div className="flex items-start justify-between">
         <div className="flex flex-col gap-0.5">
           <span className="text-xs font-semibold">{refund ? "Refund" : "You won"}</span>
-          <span className="font-display text-[40px] font-extrabold leading-none tracking-tighter">{p.claimable.toFixed(3)} SOL</span>
+          <span className="font-display text-[40px] font-bold leading-none tracking-tight">{p.claimable.toFixed(3)} SOL</span>
         </div>
         {!refund && stake > 0 && <span className="rounded-lg bg-ink px-2 py-1 font-mono text-xs text-flame">{(p.claimable / stake).toFixed(2)}×</span>}
       </div>

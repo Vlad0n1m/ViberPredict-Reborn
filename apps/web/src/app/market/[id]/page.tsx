@@ -17,7 +17,7 @@ export default function MarketPage() {
 
   if (!m) {
     return (
-      <main className="mx-auto flex w-full max-w-[1344px] flex-col gap-4 px-4 pt-6 sm:px-8 lg:px-12">
+      <main className="mx-auto flex w-full max-w-[1200px] flex-col gap-4 px-4 pt-6 sm:px-8 lg:px-12">
         <Link href="/" className="text-sm text-muted hover:text-fg">← All markets</Link>
         {error ? (
           <p className="rounded-lg bg-card p-6 text-muted">Market not found on devnet.</p>
@@ -34,29 +34,29 @@ export default function MarketPage() {
   const c = chance(m);
 
   return (
-    <main className="mx-auto grid w-full max-w-[1344px] gap-5 px-4 pt-2 sm:px-8 lg:grid-cols-[1fr_400px] lg:gap-6 lg:px-12">
+    <main className="mx-auto grid w-full max-w-[1200px] gap-5 px-4 pt-2 sm:px-8 lg:grid-cols-[1fr_380px] lg:gap-6">
       <div className="flex flex-col gap-5">
         <Link href="/" className="text-sm text-muted hover:text-fg">
           ← All markets
         </Link>
         <div className="flex flex-wrap gap-2 text-xs font-medium">
-          <span className="rounded-md bg-card px-2.5 py-1.5">{m.tag}</span>
-          <span className="rounded-md bg-card px-2.5 py-1.5 font-mono">
+          <span className="rounded-md border border-line px-2.5 py-1.5 text-muted">{m.tag}</span>
+          <span className="rounded-md border border-line px-2.5 py-1.5 font-mono text-muted">
             {m.status === "active" ? `closes in ${m.closesIn}` : m.status === "awaiting" ? "betting closed · awaiting result" : `resolved ${m.outcome?.toUpperCase()}`}
           </span>
-          <a href={solscanAccount(m.creator)} target="_blank" rel="noreferrer" className="rounded-md bg-card px-2.5 py-1.5 font-mono hover:text-flame">
+          <a href={solscanAccount(m.creator)} target="_blank" rel="noreferrer" className="rounded-md border border-line px-2.5 py-1.5 font-mono text-muted hover:text-fg">
             by {shortAddr(m.creator)}
           </a>
-          <a href={solscanAccount(m.id)} target="_blank" rel="noreferrer" className="rounded-md bg-card px-2.5 py-1.5 font-mono text-flame">
+          <a href={solscanAccount(m.id)} target="_blank" rel="noreferrer" className="rounded-md border border-line px-2.5 py-1.5 font-mono text-muted hover:text-fg">
             market on Solscan ↗
           </a>
         </div>
-        <h1 className="max-w-[860px] font-display text-[30px] font-extrabold leading-[1.02] tracking-tight sm:text-[50px]">{m.question}</h1>
+        <h1 className="max-w-[860px] text-[28px] font-bold leading-[1.1] tracking-[-0.02em] sm:text-[40px]">{m.question}</h1>
 
-        <div className="flex flex-col gap-4 rounded-lg bg-card p-5 sm:p-7">
+        <div className="flex flex-col gap-4 rounded-xl bg-card p-5 sm:p-7">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div className="flex items-baseline gap-3">
-              <span className="font-display text-6xl font-extrabold leading-[0.9] tracking-tighter text-yes sm:text-[88px]">{c}%</span>
+              <span className="font-mono text-5xl font-medium leading-none tracking-tighter sm:text-6xl">{c}<span className="text-2xl text-muted">%</span></span>
               <span className="text-muted">chance of Yes</span>
             </div>
             <div className="flex gap-7 text-[13px] text-muted">
@@ -71,15 +71,15 @@ export default function MarketPage() {
               </div>
             </div>
           </div>
-          <div className="flex h-3.5 overflow-hidden rounded-md bg-no">
-            <div className="anim-grow border-r-[3px] border-card bg-yes transition-[width] duration-500" style={{ width: `${c}%` }} />
+          <div className="flex h-1.5 overflow-hidden rounded-full bg-no/70">
+            <div className="bg-yes transition-[width] duration-500" style={{ width: `${c}%` }} />
           </div>
           <div className="flex justify-between font-mono text-[13px]">
             <span className="text-yes">Yes · {sol(m.yesPool, 3)} SOL</span>
             <span className="text-no">No · {sol(m.noPool, 3)} SOL</span>
           </div>
           {m.history && m.history.length > 2 && (
-            <div className="rounded-md bg-ink p-3">
+            <div className="pt-2">
               <Sparkline key={m.history.length} points={m.history} className="h-32 w-full" />
             </div>
           )}
@@ -133,7 +133,7 @@ function ResolvePanel({ m }: { m: Market }) {
   return (
     <div className="flex flex-col gap-3.5 rounded-lg bg-ink p-5 text-white">
       <div className="text-[13px] font-semibold text-flame">{isAdmin ? "Admin controls" : "Your market"}</div>
-      <p className="text-sm leading-relaxed text-[#A8988C]">
+      <p className="text-sm leading-relaxed text-[#8A847D]">
         {canResolve ? "Pick the real-world outcome. One transaction, winners can claim right after." : `You can resolve once betting closes (${m.closesIn}).`}
       </p>
       <div className="grid grid-cols-3 gap-2">
@@ -152,7 +152,7 @@ function ResolvePanel({ m }: { m: Market }) {
           type="button"
           disabled={!isAdmin || !!busy}
           onClick={() => act("void", () => voidIx(publicKey!, key))}
-          className="h-11 rounded-md border border-[#3A2C26] text-sm disabled:opacity-40"
+          className="h-11 rounded-md border border-[#2F2B28] text-sm disabled:opacity-40"
         >
           {busy === "void" ? "…" : "Void"}
         </button>
@@ -181,7 +181,7 @@ function Activity({ events }: { events: MarketEvent[] }) {
   return (
     <section className="flex flex-col gap-3 rounded-lg bg-card p-5">
       <div className="flex items-baseline justify-between">
-        <h2 className="font-display text-lg font-extrabold tracking-tight">Live activity</h2>
+        <h2 className="font-display text-lg font-bold tracking-tight">Live activity</h2>
         <span className="font-mono text-[11px] uppercase tracking-wider text-muted">on-chain · devnet</span>
       </div>
       {events.length === 0 ? (

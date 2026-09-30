@@ -80,7 +80,7 @@ function Win() {
       </div>
       <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-8 px-6 pt-8 md:flex-row md:items-center md:gap-12 md:pt-16">
         <div className="flex flex-col gap-2.5 md:w-[380px] md:shrink-0">
-          <span className="text-sm text-[#A8988C]">
+          <span className="text-sm text-[#8A847D]">
             Claimed to {publicKey ? shortAddr(publicKey.toBase58()) : "your wallet"}
             {sig && (
               <a href={solscanTx(sig)} target="_blank" rel="noreferrer" className="ml-2 text-flame underline">
@@ -88,8 +88,8 @@ function Win() {
               </a>
             )}
           </span>
-          <h1 className="font-display text-[46px] font-extrabold leading-[0.95] tracking-tighter md:text-6xl">You called it.</h1>
-          <span className="font-display text-[64px] font-extrabold leading-none tracking-tighter text-flame tabular-nums">+{shown.toFixed(3)} SOL</span>
+          <h1 className="font-display text-[46px] font-bold leading-[0.95] tracking-tight md:text-6xl">You called it.</h1>
+          <span className="font-display text-[64px] font-bold leading-none tracking-tight text-flame tabular-nums">+{shown.toFixed(3)} SOL</span>
           <span className="font-mono text-sm text-flame">
             +{pnl}% · you were in the {calledAt}%
           </span>
@@ -131,10 +131,10 @@ function Actions({ onShare, onCopy }: { onShare: () => void; onCopy: () => void 
         </svg>
         Share win
       </button>
-      <button type="button" onClick={onCopy} className="h-12 rounded-md border border-[#3A2C26] text-sm">
+      <button type="button" onClick={onCopy} className="h-12 rounded-md border border-[#2F2B28] text-sm">
         Copy market link
       </button>
-      <Link href="/" className="py-2 text-center text-sm text-[#A8988C]">
+      <Link href="/" className="py-2 text-center text-sm text-[#8A847D]">
         Find the next market
       </Link>
     </>
@@ -142,14 +142,14 @@ function Actions({ onShare, onCopy }: { onShare: () => void; onCopy: () => void 
 }
 
 const CONFETTI = [
-  { x: 6, w: 8, color: "#FFB02E", d: 0 },
-  { x: 14, w: 6, color: "#FF4D6A", d: 180 },
-  { x: 23, w: 8, color: "#22D39A", d: 90 },
-  { x: 34, w: 5, color: "#FFB02E", d: 320 },
-  { x: 46, w: 7, color: "#FF4D6A", d: 40 },
-  { x: 57, w: 6, color: "#22D39A", d: 260 },
-  { x: 66, w: 8, color: "#FFB02E", d: 140 },
-  { x: 75, w: 5, color: "#FF4D6A", d: 380 },
-  { x: 84, w: 7, color: "#22D39A", d: 60 },
-  { x: 93, w: 6, color: "#FFB02E", d: 220 },
+  { x: 6, w: 8, color: "#FF8A3D", d: 0 },
+  { x: 14, w: 6, color: "#F2555A", d: 180 },
+  { x: 23, w: 8, color: "#3FCF8E", d: 90 },
+  { x: 34, w: 5, color: "#FF8A3D", d: 320 },
+  { x: 46, w: 7, color: "#F2555A", d: 40 },
+  { x: 57, w: 6, color: "#3FCF8E", d: 260 },
+  { x: 66, w: 8, color: "#FF8A3D", d: 140 },
+  { x: 75, w: 5, color: "#F2555A", d: 380 },
+  { x: 84, w: 7, color: "#3FCF8E", d: 60 },
+  { x: 93, w: 6, color: "#FF8A3D", d: 220 },
 ];

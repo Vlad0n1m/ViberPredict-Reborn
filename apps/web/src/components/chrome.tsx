@@ -11,38 +11,19 @@ export function Mark({ size = 32 }: { size?: number }) {
       width={size}
       height={size}
       alt=""
-      className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:drop-shadow-[0_0_12px_rgba(255,138,31,0.6)]"
+      className="rounded-md"
     />
   );
 }
 
-export function Logo({ size = 34 }: { size?: number }) {
+export function Logo({ size = 26 }: { size?: number }) {
   return (
-    <Link href="/" className="group flex items-center gap-2.5 font-display font-black uppercase leading-[0.9] tracking-tight">
+    <Link href="/" className="group flex items-center gap-2 text-[15px] font-bold tracking-tight">
       <Mark size={size} />
-      <span className="flex flex-col text-[15px] sm:text-[17px]">
-        <span>Viber</span>
-        <span className="text-[#FF8A1F]">Reborn</span>
+      <span>
+        viber <span className="text-muted">reborn</span>
       </span>
     </Link>
-  );
-}
-
-const TICKER = ["We are back to business!", "Burned down. Rose again.", "New program · new chain state · new pool", "Place your bets", "Build #2 is live on devnet"];
-
-export function Ticker() {
-  const items = [...TICKER, ...TICKER];
-  return (
-    <div className="overflow-hidden border-b border-line bg-flame text-ink">
-      <div className="marquee flex w-max gap-8 py-1.5 font-display text-[11px] font-black uppercase tracking-[0.18em]">
-        {items.map((t, i) => (
-          <span key={i} className="flex items-center gap-8">
-            {t}
-            <span aria-hidden>✦</span>
-          </span>
-        ))}
-      </div>
-    </div>
   );
 }
 
@@ -60,16 +41,16 @@ function isActive(path: string, href: string) {
 export function Header() {
   const path = usePathname();
   return (
-    <header className="sticky top-0 z-20 border-b border-line bg-paper/80 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-[1344px] items-center justify-between gap-6 px-4 sm:h-[76px] sm:px-8 lg:px-12">
-        <div className="flex items-center gap-10">
+    <header className="sticky top-0 z-20 border-b border-line bg-paper/85 backdrop-blur-md">
+      <div className="mx-auto flex h-14 max-w-[1200px] items-center justify-between gap-6 px-4 sm:h-16 sm:px-8 lg:px-12">
+        <div className="flex items-center gap-8">
           <Logo />
-          <nav className="hidden gap-1 text-[15px] font-medium md:flex">
+          <nav className="hidden gap-1 text-sm md:flex">
             {nav.slice(0, 3).map((n) => (
               <Link
                 key={n.href}
                 href={n.href}
-                className={`rounded-md px-3.5 py-2 ${isActive(path, n.href) ? "bg-card text-flame" : "text-muted hover:text-fg"}`}
+                className={`rounded-md px-3 py-1.5 transition-colors duration-150 ${isActive(path, n.href) ? "text-fg" : "text-muted hover:text-fg"}`}
               >
                 {n.label === "Positions" ? "Portfolio" : n.label}
               </Link>
@@ -77,12 +58,12 @@ export function Header() {
           </nav>
         </div>
         <div className="flex items-center gap-2">
-          <span className="hidden items-center gap-2 rounded-md bg-devnet px-3.5 py-2 text-sm font-bold text-ink sm:flex">
-            <span className="live-dot h-2 w-2 bg-ink" />
-            Devnet
+          <span className="hidden items-center gap-1.5 px-2 font-mono text-xs text-muted sm:flex">
+            <span className="h-1.5 w-1.5 rounded-full bg-yes" />
+            devnet
           </span>
-          <Link href="/create" className="hidden rounded-md bg-flame px-4 py-2 text-sm font-bold text-ink md:block">
-            + Create
+          <Link href="/create" className="hidden rounded-lg bg-flame px-3.5 py-1.5 text-sm font-semibold text-ink transition-opacity duration-150 hover:opacity-90 md:block">
+            New market
           </Link>
           <WalletButton />
         </div>
@@ -99,7 +80,7 @@ export function BottomNav() {
         const active = isActive(path, n.href);
         return (
           <Link key={n.href} href={n.href} className={`flex flex-col items-center justify-center gap-1 ${active ? "text-fg" : "text-muted"}`}>
-            <span className={`flex h-[30px] items-center justify-center rounded-md ${active ? "w-[52px] bg-flame text-ink" : ""}`}>
+            <span className={`flex h-[30px] items-center justify-center rounded-md ${active ? "text-flame" : ""}`}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
                 {n.icon}
               </svg>
