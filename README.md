@@ -10,7 +10,7 @@ Anyone creates a YES/NO market, anyone bets SOL on either side, winners split th
 ## Live
 
 - Web: https://viber-predict-reborn.vercel.app (Vercel project `viber-predict-reborn`)
-- Mobile: Android APK for Solana Seeker, installed over USB
+- Mobile: Android APK for Solana Seeker (`apps/mobile`, package `app.viberreborn.predict`), installed over USB
 
 ## How it works
 
@@ -105,12 +105,16 @@ anchor build
 anchor deploy --provider.cluster devnet
 ```
 
-Mobile (needs JDK 17 + Android SDK, phone connected by USB):
+Mobile (needs JDK 17 + Android SDK, Seeker connected by USB) — release APK with bundled JS:
 
 ```bash
 source scripts/android-env.sh
-cd apps/mobile && npx expo run:android
+cd apps/mobile && npx expo prebuild -p android
+cd android && ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a
+adb install -r app/build/outputs/apk/release/app-release.apk
 ```
+
+Wallets: Mobile Wallet Adapter (Seed Vault Wallet, Phantom, Solflare, Backpack). `authorize` sends both `chain: solana:devnet` and `cluster: devnet` — Phantom reads the latter. `/.well-known/assetlinks.json` (served by `apps/web`) verifies the APK signing cert so wallets don't flag the app.
 
 ## Deploy
 
