@@ -75,11 +75,11 @@ function WalletModal({ children }: { children: ReactNode }) {
             role="dialog"
             aria-label="Connect a wallet"
             onClick={(e) => e.stopPropagation()}
-            className="anim-rise flex w-full max-w-md flex-col gap-3 rounded-t-[30px] bg-card p-5 pb-8 sm:rounded-[30px] sm:pb-5"
+            className="anim-rise flex w-full max-w-md flex-col gap-3 rounded-t-[30px] bg-card p-5 pb-8 sm:rounded-lg sm:pb-5"
           >
             <div className="flex items-center justify-between">
               <h2 className="font-display text-2xl font-extrabold tracking-tight">Connect wallet</h2>
-              <button type="button" aria-label="Close" onClick={() => setOpen(false)} className="flex h-10 w-10 items-center justify-center rounded-full bg-paper">
+              <button type="button" aria-label="Close" onClick={() => setOpen(false)} className="flex h-10 w-10 items-center justify-center rounded-md bg-paper">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden>
                   <path d="M5 5l14 14M19 5L5 19" />
                 </svg>
@@ -87,7 +87,7 @@ function WalletModal({ children }: { children: ReactNode }) {
             </div>
             <p className="text-sm text-muted">Devnet only — use test SOL.</p>
             {list.length === 0 && (
-              <a href="https://phantom.app/download" target="_blank" rel="noreferrer" className="rounded-2xl bg-paper px-4 py-4 text-sm font-medium">
+              <a href="https://phantom.app/download" target="_blank" rel="noreferrer" className="rounded-md bg-paper px-4 py-4 text-sm font-medium">
                 No wallet found. Install Phantom →
               </a>
             )}
@@ -102,12 +102,12 @@ function WalletModal({ children }: { children: ReactNode }) {
                     if (!ready && w.adapter.url) return window.open(w.adapter.url, "_blank");
                     select(w.adapter.name);
                   }}
-                  className="flex h-16 items-center gap-3 rounded-2xl bg-paper px-4 text-left transition-transform duration-150 active:scale-[0.98] disabled:opacity-50"
+                  className="flex h-16 items-center gap-3 rounded-md bg-paper px-4 text-left transition-transform duration-150 active:scale-[0.98] disabled:opacity-50"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={w.adapter.icon} alt="" width={32} height={32} className="rounded-lg" />
                   <span className="flex-1 font-semibold">{label(w.adapter.name)}</span>
-                  <span className={`text-xs ${ready ? "text-[#137a50]" : "text-muted"}`}>
+                  <span className={`text-xs ${ready ? "text-[#3BE3A5]" : "text-muted"}`}>
                     {connecting ? "Connecting…" : ready ? (w.readyState === WalletReadyState.Installed ? "Detected" : "Tap to open") : "Install"}
                   </span>
                 </button>
@@ -136,14 +136,14 @@ export function WalletButton() {
 
   if (!publicKey) {
     return (
-      <button type="button" onClick={open} className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-white transition-transform duration-150 active:scale-[0.97]">
+      <button type="button" onClick={open} className="rounded-md bg-ink px-4 py-2 text-sm font-semibold text-white transition-transform duration-150 active:scale-[0.97]">
         Connect
       </button>
     );
   }
   return (
-    <a href="/settings" className="flex items-center gap-2 rounded-full bg-ink px-3.5 py-2 font-mono text-xs text-white sm:px-4 sm:text-sm">
-      <span className="live-dot h-1.5 w-1.5 bg-lime" />
+    <a href="/settings" className="flex items-center gap-2 rounded-md bg-ink px-3.5 py-2 font-mono text-xs text-white sm:px-4 sm:text-sm">
+      <span className="live-dot h-1.5 w-1.5 bg-flame" />
       <span className="hidden sm:inline">{short(publicKey.toBase58())} · </span>
       {balance === null ? "…" : balance.toFixed(2)} SOL
     </a>

@@ -82,12 +82,13 @@ Neon: `DATABASE_URL` env var (Vercel Marketplace → Neon). Tables are created o
 - Web: `@solana/wallet-adapter` (Phantom, Solflare, Backpack via Wallet Standard; MWA in Android Chrome).
 - Seeker: Mobile Wallet Adapter (Seed Vault Wallet, Phantom, Solflare). Stack copied from a working Seeker app: Expo 54, RN 0.81.5, `@solana-mobile/mobile-wallet-adapter-protocol` 2.2.6 + postinstall patch. Authorize with chain `solana:devnet`.
 
-## Design
+## Design (Reborn)
 
-Light theme, warm paper background `#F4F2EC`, white cards, ink `#15161A`.
-YES blue `#2459FF`, NO coral `#FF5A1F`, primary CTA lime `#D7FF3D` with dark text.
-Fonts: Bricolage Grotesque (headings, big numbers), Geist (text), Geist Mono (SOL, odds, addresses).
-Screens: markets feed with featured event banners, market + bet panel, create market, positions + claim, settings, "You won" + shareable P&L card (1200×900) and story (540×960).
+Dark "ash & ember" theme: page `#0C0A09`, cards `#171210`, text `#F5EDE4`.
+Flame accent `#FFB02E` (CTA, active states), YES emerald `#22D39A`, NO rose `#FF4D6A`, devnet cyan `#38D6F5`.
+Fonts: Unbounded (headings, numbers), Manrope (text), JetBrains Mono (SOL, odds, addresses). Sharp 6–8px radii, ash grid background.
+Logo: phoenix mark (`public/mark.svg`, source in `src/lib/brand.ts`); PNG lockup at `/logo`.
+Top ticker: "We are back to business!".
 
 ## Run locally
 

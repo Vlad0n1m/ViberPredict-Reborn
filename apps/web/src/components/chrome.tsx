@@ -2,33 +2,47 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { RebornBadge } from "./reborn";
 import { WalletButton } from "./wallet";
 
-export function Mark({ size = 28 }: { size?: number }) {
+export function Mark({ size = 32 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden className="group-hover:rotate-[20deg] transition-transform duration-300">
-      <defs>
-        <clipPath id="mark-clip">
-          <circle cx="32" cy="32" r="30" />
-        </clipPath>
-      </defs>
-      <g clipPath="url(#mark-clip)">
-        <rect x="-20" y="-20" width="52" height="104" fill="#2459FF" transform="rotate(20 32 32)" />
-        <rect x="32" y="-20" width="52" height="104" fill="#FF5A1F" transform="rotate(20 32 32)" />
-      </g>
-      <circle cx="32" cy="32" r="10" fill="#D7FF3D" stroke="#15161A" strokeWidth="4" />
-    </svg>
+    <img
+      src="/mark.svg"
+      width={size}
+      height={size}
+      alt=""
+      className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:drop-shadow-[0_0_12px_rgba(255,138,31,0.6)]"
+    />
   );
 }
 
-export function Logo({ size = 28 }: { size?: number }) {
+export function Logo({ size = 34 }: { size?: number }) {
   return (
-    <Link href="/" className="group flex items-center gap-2.5 font-display text-xl font-extrabold tracking-tight sm:text-2xl">
+    <Link href="/" className="group flex items-center gap-2.5 font-display font-black uppercase leading-[0.9] tracking-tight">
       <Mark size={size} />
-      viber predict
-      <span className="hidden sm:inline-flex"><RebornBadge /></span>
+      <span className="flex flex-col text-[15px] sm:text-[17px]">
+        <span>Viber</span>
+        <span className="text-[#FF8A1F]">Reborn</span>
+      </span>
     </Link>
+  );
+}
+
+const TICKER = ["We are back to business!", "Burned down. Rose again.", "New program · new chain state · new pool", "Place your bets", "Build #2 is live on devnet"];
+
+export function Ticker() {
+  const items = [...TICKER, ...TICKER];
+  return (
+    <div className="overflow-hidden border-b border-line bg-flame text-ink">
+      <div className="marquee flex w-max gap-8 py-1.5 font-display text-[11px] font-black uppercase tracking-[0.18em]">
+        {items.map((t, i) => (
+          <span key={i} className="flex items-center gap-8">
+            {t}
+            <span aria-hidden>✦</span>
+          </span>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -46,7 +60,7 @@ function isActive(path: string, href: string) {
 export function Header() {
   const path = usePathname();
   return (
-    <header className="sticky top-0 z-20 bg-paper/90 backdrop-blur">
+    <header className="sticky top-0 z-20 border-b border-line bg-paper/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-[1344px] items-center justify-between gap-6 px-4 sm:h-[76px] sm:px-8 lg:px-12">
         <div className="flex items-center gap-10">
           <Logo />
@@ -55,7 +69,7 @@ export function Header() {
               <Link
                 key={n.href}
                 href={n.href}
-                className={`rounded-full px-3.5 py-2 ${isActive(path, n.href) ? "bg-card" : "text-muted hover:text-ink"}`}
+                className={`rounded-md px-3.5 py-2 ${isActive(path, n.href) ? "bg-card text-flame" : "text-muted hover:text-fg"}`}
               >
                 {n.label === "Positions" ? "Portfolio" : n.label}
               </Link>
@@ -63,11 +77,11 @@ export function Header() {
           </nav>
         </div>
         <div className="flex items-center gap-2">
-          <span className="hidden items-center gap-2 rounded-full bg-devnet px-3.5 py-2 text-sm font-semibold sm:flex">
+          <span className="hidden items-center gap-2 rounded-md bg-devnet px-3.5 py-2 text-sm font-semibold sm:flex">
             <span className="live-dot h-2 w-2 bg-ink" />
             Devnet
           </span>
-          <Link href="/create" className="hidden rounded-full bg-lime px-4 py-2 text-sm font-semibold md:block">
+          <Link href="/create" className="hidden rounded-md bg-flame px-4 py-2 text-sm font-semibold md:block">
             + Create
           </Link>
           <WalletButton />
@@ -80,12 +94,12 @@ export function Header() {
 export function BottomNav() {
   const path = usePathname();
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-20 grid h-[72px] grid-cols-4 bg-card px-2 pb-[env(safe-area-inset-bottom)] text-[11px] font-medium md:hidden">
+    <nav className="fixed inset-x-0 bottom-0 z-20 grid h-[72px] grid-cols-4 border-t border-line bg-card/95 px-2 backdrop-blur pb-[env(safe-area-inset-bottom)] text-[11px] font-medium md:hidden">
       {nav.map((n) => {
         const active = isActive(path, n.href);
         return (
-          <Link key={n.href} href={n.href} className={`flex flex-col items-center justify-center gap-1 ${active ? "text-ink" : "text-muted"}`}>
-            <span className={`flex h-[30px] items-center justify-center rounded-full ${active ? "w-[52px] bg-lime" : ""}`}>
+          <Link key={n.href} href={n.href} className={`flex flex-col items-center justify-center gap-1 ${active ? "text-fg" : "text-muted"}`}>
+            <span className={`flex h-[30px] items-center justify-center rounded-md ${active ? "w-[52px] bg-flame text-ink" : ""}`}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
                 {n.icon}
               </svg>

@@ -12,18 +12,18 @@ export default function PortfolioPage() {
       <h1 className="mb-2 font-display text-[40px] font-extrabold leading-none tracking-tighter sm:text-6xl">Your bets</h1>
 
       {won && wonMarket && (
-        <div className="flex flex-col gap-3.5 rounded-[26px] bg-lime p-5">
+        <div className="flex flex-col gap-3.5 rounded-lg bg-flame p-5">
           <div className="flex items-start justify-between">
             <div className="flex flex-col gap-0.5">
               <span className="text-xs font-semibold">You won</span>
               <span className="font-display text-[44px] font-extrabold leading-none tracking-tighter">{won.claimable!.toFixed(2)} SOL</span>
             </div>
-            <span className="rounded-lg bg-ink px-2 py-1 font-mono text-xs text-lime">{(won.claimable! / won.stake).toFixed(2)}×</span>
+            <span className="rounded-lg bg-ink px-2 py-1 font-mono text-xs text-flame">{(won.claimable! / won.stake).toFixed(2)}×</span>
           </div>
           <p className="text-[13px]">
             {wonMarket.question} · {won.side === "yes" ? "Yes" : "No"}
           </p>
-          <Link href="/win" className="flex h-[52px] items-center justify-center rounded-full bg-ink text-base font-semibold text-white">
+          <Link href="/win" className="flex h-[52px] items-center justify-center rounded-md bg-ink text-base font-semibold text-white">
             Claim to wallet
           </Link>
         </div>
@@ -34,9 +34,9 @@ export default function PortfolioPage() {
         const m = getMarket(p.marketId)!;
         const yes = p.side === "yes";
         return (
-          <Link key={p.marketId} href={`/market/${m.id}`} className="flex items-center gap-3 rounded-[22px] bg-card px-4 py-3.5">
+          <Link key={p.marketId} href={`/market/${m.id}`} className="flex items-center gap-3 rounded-lg bg-card px-4 py-3.5">
             <span
-              className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-xs font-semibold ${yes ? "bg-yes-soft text-[#1a45d6]" : "bg-no-soft text-[#b83a0b]"}`}
+              className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-md text-xs font-semibold ${yes ? "bg-yes-soft text-[#17A877]" : "bg-no-soft text-[#FF8A9C]"}`}
             >
               {yes ? "YES" : "NO"}
             </span>

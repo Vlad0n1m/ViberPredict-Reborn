@@ -28,10 +28,10 @@ export default function Home() {
             type="button"
             onClick={() => setCat(c)}
             aria-pressed={cat === c}
-            className={`flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 transition-colors duration-200 ${cat === c ? "bg-ink text-white" : "bg-card hover:bg-card sm:bg-transparent"}`}
+            className={`flex shrink-0 items-center gap-1.5 rounded-md px-3.5 py-2 transition-colors duration-200 ${cat === c ? "bg-flame text-ink" : "bg-card hover:bg-card sm:bg-transparent"}`}
           >
             {i === 0 && (
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D7FF3D" strokeWidth="2.5" aria-hidden>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFB02E" strokeWidth="2.5" aria-hidden>
                 <path d="M3 17l6-6 4 4 8-8M15 7h6v6" />
               </svg>
             )}
@@ -48,7 +48,7 @@ export default function Home() {
       <section className="grid gap-4 lg:grid-cols-3">
         <Link
           href={`/market/${featured.id}`}
-          className="flex flex-col gap-6 overflow-hidden rounded-[28px] bg-ink p-5 text-white sm:rounded-[32px] sm:p-8 lg:col-span-2 lg:flex-row"
+          className="flex flex-col gap-6 overflow-hidden rounded-lg bg-ink p-5 text-white sm:rounded-lg sm:p-8 lg:col-span-2 lg:flex-row"
         >
           <div className="flex flex-col gap-4 lg:w-[400px] lg:shrink-0">
             <div className="flex items-center gap-2">
@@ -56,41 +56,41 @@ export default function Home() {
                 <span className="live-dot h-1.5 w-1.5 bg-ink" />
                 LIVE
               </span>
-              <span className="text-[13px] text-[#a9a69e]">Featured · {featured.tag} · {featured.closesIn}</span>
+              <span className="text-[13px] text-[#A8988C]">Featured · {featured.tag} · {featured.closesIn}</span>
             </div>
             <h2 className="font-display text-[28px] font-extrabold leading-[1.02] tracking-tight sm:text-[40px]">{featured.question}</h2>
             <div className="flex items-baseline gap-2.5">
-              <span className="font-display text-5xl font-extrabold leading-none tracking-tighter text-lime sm:text-[64px]">{c}%</span>
-              <span className="text-sm text-[#a9a69e]">chance</span>
-              <span className="font-mono text-sm text-lime">▲ {delta} today</span>
+              <span className="font-display text-5xl font-extrabold leading-none tracking-tighter text-flame sm:text-[64px]">{c}%</span>
+              <span className="text-sm text-[#A8988C]">chance</span>
+              <span className="font-mono text-sm text-flame">▲ {delta} today</span>
             </div>
             <Sparkline points={hist} className="h-28 w-full lg:hidden" />
             <div className="mt-auto grid grid-cols-2 gap-2.5 font-semibold">
-              <span className="flex h-14 items-center justify-between rounded-2xl bg-yes px-4 text-white">
+              <span className="flex h-14 items-center justify-between rounded-md bg-yes px-4 text-ink">
                 Buy Yes <span className="font-mono text-[13px]">{multiplier(featured, "yes").toFixed(2)}×</span>
               </span>
-              <span className="flex h-14 items-center justify-between rounded-2xl bg-no px-4 text-ink">
+              <span className="flex h-14 items-center justify-between rounded-md bg-no px-4 text-ink">
                 Buy No <span className="font-mono text-[13px]">{multiplier(featured, "no").toFixed(2)}×</span>
               </span>
             </div>
           </div>
           <div className="hidden flex-1 flex-col gap-2.5 lg:flex">
-            <div className="flex justify-between font-mono text-xs text-[#a9a69e]">
+            <div className="flex justify-between font-mono text-xs text-[#A8988C]">
               <span>{sol(total(featured))} SOL · {featured.bettors} bettors</span>
               <span>1H · 6H · <span className="text-white">ALL</span></span>
             </div>
             <Sparkline points={hist} className="w-full flex-1" />
-            <div className="flex justify-between font-mono text-[11px] text-[#6e6b64]">
+            <div className="flex justify-between font-mono text-[11px] text-[#6F625A]">
               <span>17:00</span><span>17:40</span><span>18:20</span><span>now</span>
             </div>
           </div>
         </Link>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-          <Link href={`/market/${hackathon[0]?.id ?? featured.id}`} className="relative flex min-h-[220px] flex-col gap-3 overflow-hidden rounded-[28px] bg-lime p-6 sm:rounded-[32px]">
+          <Link href={`/market/${hackathon[0]?.id ?? featured.id}`} className="relative flex min-h-[220px] flex-col gap-3 overflow-hidden rounded-lg bg-flame p-6 sm:rounded-lg">
             <svg width="160" height="160" viewBox="0 0 160 160" className="absolute -right-8 -top-8" aria-hidden>
-              <circle cx="80" cy="80" r="70" fill="none" stroke="#15161A" strokeWidth="2" strokeDasharray="6 8" />
-              <circle cx="80" cy="80" r="40" fill="#15161A" />
+              <circle cx="80" cy="80" r="70" fill="none" stroke="#0C0A09" strokeWidth="2" strokeDasharray="6 8" />
+              <circle cx="80" cy="80" r="40" fill="#0C0A09" />
             </svg>
             <span className="text-xs font-bold tracking-wide">EVENT · TONIGHT</span>
             <p className="max-w-[240px] font-display text-3xl font-extrabold leading-none tracking-tight">Pitch Night Astana</p>
@@ -107,11 +107,11 @@ export default function Home() {
               </div>
             </div>
           </Link>
-          <Link href={`/market/${snow.id}`} className="relative flex min-h-[170px] flex-col gap-2 overflow-hidden rounded-[28px] bg-yes px-6 py-5 text-white sm:rounded-[32px]">
+          <Link href={`/market/${snow.id}`} className="relative flex min-h-[170px] flex-col gap-2 overflow-hidden rounded-lg bg-yes px-6 py-5 text-white sm:rounded-lg">
             <svg width="140" height="140" viewBox="0 0 140 140" className="absolute -bottom-10 -right-5" aria-hidden>
               <path d="M70 10l12 40h40l-32 24 12 40-32-24-32 24 12-40-32-24h40z" fill="none" stroke="#FFFFFF" strokeOpacity="0.5" strokeWidth="2" />
             </svg>
-            <span className="text-xs font-bold tracking-wide text-lime">ASTANA · WEATHER</span>
+            <span className="text-xs font-bold tracking-wide text-flame">ASTANA · WEATHER</span>
             <p className="max-w-[250px] font-display text-2xl font-extrabold leading-tight tracking-tight">First snow before Oct 15?</p>
             <span className="mt-auto font-mono text-sm">{chance(snow)}% yes · {sol(total(snow), 1)} SOL</span>
           </Link>
@@ -158,9 +158,9 @@ function Filtered({ cat }: { cat: string }) {
         </span>
       </div>
       {list.length === 0 ? (
-        <div className="anim-rise flex flex-col items-start gap-3 rounded-3xl bg-card p-6">
+        <div className="anim-rise flex flex-col items-start gap-3 rounded-lg bg-card p-6">
           <p className="font-display text-xl font-bold">No {cat} markets yet.</p>
-          <Link href="/create" className="rounded-full bg-lime px-4 py-2 text-sm font-semibold">
+          <Link href="/create" className="rounded-md bg-flame px-4 py-2 text-sm font-semibold">
             Create the first one
           </Link>
         </div>

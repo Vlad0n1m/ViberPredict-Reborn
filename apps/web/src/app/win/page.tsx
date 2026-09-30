@@ -30,12 +30,12 @@ export default function WinPage() {
   }, [profit]);
 
   const url = typeof window !== "undefined" ? `${window.location.origin}/market/${m.id}` : "";
-  const text = `I called it on Viber Predict: +${profit.toFixed(2)} SOL (+${pnl}%) on "${m.question}"`;
+  const text = `I called it on Viber Reborn: +${profit.toFixed(2)} SOL (+${pnl}%) on "${m.question}"`;
 
   async function share() {
     try {
       if (navigator.share) {
-        await navigator.share({ title: "Viber Predict", text, url });
+        await navigator.share({ title: "Viber Reborn", text, url });
         return;
       }
       await navigator.clipboard.writeText(`${text} ${url}`);
@@ -67,10 +67,10 @@ export default function WinPage() {
       </div>
       <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-8 px-6 pt-8 md:flex-row md:items-center md:gap-12 md:pt-16">
         <div className="flex flex-col gap-2.5 md:w-[380px] md:shrink-0">
-          <span className="text-sm text-[#a9a69e]">Claimed to {wallet.short}</span>
+          <span className="text-sm text-[#A8988C]">Claimed to {wallet.short}</span>
           <h1 className="font-display text-[46px] font-extrabold leading-[0.95] tracking-tighter md:text-6xl">You called it.</h1>
-          <span className="font-display text-[64px] font-extrabold leading-none tracking-tighter text-lime tabular-nums">+{shown.toFixed(2)} SOL</span>
-          <span className="font-mono text-sm text-lime">
+          <span className="font-display text-[64px] font-extrabold leading-none tracking-tighter text-flame tabular-nums">+{shown.toFixed(2)} SOL</span>
+          <span className="font-mono text-sm text-flame">
             +{pnl}% · you were in the {calledAt}%
           </span>
           <div className="mt-6 hidden flex-col gap-2.5 md:flex">
@@ -93,7 +93,7 @@ export default function WinPage() {
           <Actions onShare={share} onCopy={copyLink} />
         </div>
       </div>
-      {note && <p className="relative mt-3 text-center text-sm text-lime">{note}</p>}
+      {note && <p className="relative mt-3 text-center text-sm text-flame">{note}</p>}
     </main>
   );
 }
@@ -104,17 +104,17 @@ function Actions({ onShare, onCopy }: { onShare: () => void; onCopy: () => void 
       <button
         type="button"
         onClick={onShare}
-        className="flex h-[60px] items-center justify-center gap-2.5 rounded-full bg-lime text-[17px] font-semibold text-ink transition-transform duration-150 active:scale-[0.98]"
+        className="flex h-[60px] items-center justify-center gap-2.5 rounded-md bg-flame text-[17px] font-semibold text-ink transition-transform duration-150 active:scale-[0.98]"
       >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#15161A" strokeWidth="2.2" aria-hidden>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0C0A09" strokeWidth="2.2" aria-hidden>
           <path d="M12 3v13M6 9l6-6 6 6M5 21h14" />
         </svg>
         Share win
       </button>
-      <button type="button" onClick={onCopy} className="h-12 rounded-full border border-[#3a3b40] text-sm">
+      <button type="button" onClick={onCopy} className="h-12 rounded-md border border-[#3A2C26] text-sm">
         Copy market link
       </button>
-      <Link href="/" className="py-2 text-center text-sm text-[#a9a69e]">
+      <Link href="/" className="py-2 text-center text-sm text-[#A8988C]">
         Find the next market
       </Link>
     </>
@@ -122,14 +122,14 @@ function Actions({ onShare, onCopy }: { onShare: () => void; onCopy: () => void 
 }
 
 const CONFETTI = [
-  { x: 6, w: 8, color: "#D7FF3D", d: 0 },
-  { x: 14, w: 6, color: "#FF5A1F", d: 180 },
-  { x: 23, w: 8, color: "#2459FF", d: 90 },
-  { x: 34, w: 5, color: "#D7FF3D", d: 320 },
-  { x: 46, w: 7, color: "#FF5A1F", d: 40 },
-  { x: 57, w: 6, color: "#2459FF", d: 260 },
-  { x: 66, w: 8, color: "#D7FF3D", d: 140 },
-  { x: 75, w: 5, color: "#FF5A1F", d: 380 },
-  { x: 84, w: 7, color: "#2459FF", d: 60 },
-  { x: 93, w: 6, color: "#D7FF3D", d: 220 },
+  { x: 6, w: 8, color: "#FFB02E", d: 0 },
+  { x: 14, w: 6, color: "#FF4D6A", d: 180 },
+  { x: 23, w: 8, color: "#22D39A", d: 90 },
+  { x: 34, w: 5, color: "#FFB02E", d: 320 },
+  { x: 46, w: 7, color: "#FF4D6A", d: 40 },
+  { x: 57, w: 6, color: "#22D39A", d: 260 },
+  { x: 66, w: 8, color: "#FFB02E", d: 140 },
+  { x: 75, w: 5, color: "#FF4D6A", d: 380 },
+  { x: 84, w: 7, color: "#22D39A", d: 60 },
+  { x: 93, w: 6, color: "#FFB02E", d: 220 },
 ];

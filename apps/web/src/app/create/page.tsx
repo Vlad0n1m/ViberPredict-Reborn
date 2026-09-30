@@ -22,7 +22,7 @@ export default function CreatePage() {
         crowd.
       </h1>
 
-      <div className="flex flex-col gap-2 rounded-[22px] bg-card p-4">
+      <div className="flex flex-col gap-2 rounded-lg bg-card p-4">
         <label htmlFor="q" className="text-xs text-muted">
           Yes / No question
         </label>
@@ -46,7 +46,7 @@ export default function CreatePage() {
               type="button"
               onClick={() => setDur(d)}
               aria-pressed={dur === d}
-              className={`h-12 rounded-2xl text-sm ${dur === d ? "bg-ink font-semibold text-white" : "bg-card"}`}
+              className={`h-12 rounded-md text-sm ${dur === d ? "bg-flame font-semibold text-ink" : "bg-card"}`}
             >
               {d}
             </button>
@@ -63,16 +63,16 @@ export default function CreatePage() {
           value={src}
           onChange={(e) => setSrc(e.target.value)}
           placeholder="https://"
-          className="h-[50px] rounded-2xl bg-card px-4 text-[15px] outline-none focus:ring-2 focus:ring-yes"
+          className="h-[50px] rounded-md bg-card px-4 text-[15px] outline-none focus:ring-2 focus:ring-yes"
         />
       </div>
 
       <div className="grid grid-cols-2 gap-2">
-        <div className="flex flex-col gap-0.5 rounded-[18px] bg-yes-soft px-3.5 py-3 text-[#1a45d6]">
+        <div className="flex flex-col gap-0.5 rounded-lg bg-yes-soft px-3.5 py-3 text-[#17A877]">
           <span className="text-[11px]">You earn</span>
           <span className="font-mono text-[15px] font-medium">1% of pool</span>
         </div>
-        <div className="flex flex-col gap-0.5 rounded-[18px] bg-card px-3.5 py-3">
+        <div className="flex flex-col gap-0.5 rounded-lg bg-card px-3.5 py-3">
           <span className="text-[11px] text-muted">Costs</span>
           <span className="font-mono text-[15px] font-medium">≈0.003 SOL</span>
         </div>
@@ -82,7 +82,7 @@ export default function CreatePage() {
         type="button"
         disabled={q.trim().length < 10}
         onClick={() => (publicKey ? setSent(true) : openWallet())}
-        className="mt-2 h-[60px] rounded-full bg-lime text-[17px] font-semibold transition-transform duration-150 active:scale-[0.98] disabled:opacity-40"
+        className="mt-2 h-[60px] rounded-md bg-flame text-[17px] font-semibold transition-transform duration-150 active:scale-[0.98] disabled:opacity-40"
       >
         {!publicKey ? "Connect wallet to launch" : sent ? "Approve in your wallet…" : "Launch market"}
       </button>

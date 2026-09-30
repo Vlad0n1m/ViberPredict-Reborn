@@ -18,20 +18,20 @@ export function BetPanel({ m }: { m: Market }) {
   const open = m.status === "active";
 
   return (
-    <aside className="flex flex-col gap-4 rounded-[28px] bg-card p-5 sm:p-6 lg:sticky lg:top-24">
+    <aside className="flex flex-col gap-4 rounded-lg bg-card p-5 sm:p-6 lg:sticky lg:top-24">
       <h2 className="font-display text-[22px] font-bold tracking-tight">Place a bet</h2>
-      <div className="grid grid-cols-2 gap-1.5 rounded-[20px] bg-paper p-1.5">
+      <div className="grid grid-cols-2 gap-1.5 rounded-lg bg-paper p-1.5">
         {(["yes", "no"] as const).map((s) => {
           const active = side === s;
-          const on = s === "yes" ? "bg-yes text-white" : "bg-no text-ink";
-          const off = s === "yes" ? "text-[#1a45d6]" : "text-[#b83a0b]";
+          const on = s === "yes" ? "bg-yes text-ink" : "bg-no text-ink";
+          const off = s === "yes" ? "text-[#17A877]" : "text-[#FF8A9C]";
           return (
             <button
               key={s}
               type="button"
               onClick={() => setSide(s)}
               aria-pressed={active}
-              className={`h-14 rounded-2xl text-base font-semibold transition-colors duration-150 ${active ? on : off}`}
+              className={`h-14 rounded-md text-base font-semibold transition-colors duration-150 ${active ? on : off}`}
             >
               {s === "yes" ? "Yes" : "No"} · {multiplier(m, s).toFixed(2)}×
             </button>
@@ -43,7 +43,7 @@ export function BetPanel({ m }: { m: Market }) {
         <label htmlFor="amount" className="text-[13px] text-muted">
           Amount
         </label>
-        <div className={`flex h-16 items-center gap-2 rounded-[18px] border-2 px-4 ${over ? "border-no" : "border-ink"}`}>
+        <div className={`flex h-16 items-center gap-2 rounded-lg border-2 px-4 ${over ? "border-no" : "border-fg"}`}>
           <input
             id="amount"
             inputMode="decimal"
@@ -53,7 +53,7 @@ export function BetPanel({ m }: { m: Market }) {
           />
           <span className="text-[15px] text-muted">SOL</span>
         </div>
-        {over && <p className="text-xs text-[#b83a0b]">Max {MAX_BET} SOL per bet on this build.</p>}
+        {over && <p className="text-xs text-[#FF8A9C]">Max {MAX_BET} SOL per bet on this build.</p>}
         <div className="grid grid-cols-3 gap-2 font-mono text-[13px]">
           {["0.1", "0.5", "1"].map((v) => {
             const active = Number.parseFloat(amount) === Number.parseFloat(v);
@@ -62,7 +62,7 @@ export function BetPanel({ m }: { m: Market }) {
                 key={v}
                 type="button"
                 onClick={() => setAmount(Number.parseFloat(v).toFixed(2))}
-                className={`h-10 rounded-full ${active ? "bg-ink text-white" : "bg-paper"}`}
+                className={`h-10 rounded-md ${active ? "bg-flame text-ink" : "bg-paper"}`}
               >
                 {v === "1" ? "1 max" : v}
               </button>
@@ -78,7 +78,7 @@ export function BetPanel({ m }: { m: Market }) {
         </div>
         <div className="flex justify-between">
           <span className="text-muted">Network</span>
-          <span className="font-medium text-[#8a5f00]">Devnet · test SOL</span>
+          <span className="font-medium text-[#FFC53D]">Devnet · test SOL</span>
         </div>
       </div>
 
@@ -86,7 +86,7 @@ export function BetPanel({ m }: { m: Market }) {
         type="button"
         disabled={!open || stake <= 0}
         onClick={() => (publicKey ? setSent(true) : openWallet())}
-        className="h-[60px] rounded-full bg-lime text-[17px] font-semibold transition-transform duration-150 active:scale-[0.98] disabled:opacity-40"
+        className="h-[60px] rounded-md bg-flame text-[17px] font-semibold transition-transform duration-150 active:scale-[0.98] disabled:opacity-40"
       >
         {!open ? "Betting closed" : !publicKey ? "Connect wallet to bet" : sent ? "Approve in your wallet…" : `Bet ${stake.toFixed(2)} SOL on ${side === "yes" ? "Yes" : "No"}`}
       </button>

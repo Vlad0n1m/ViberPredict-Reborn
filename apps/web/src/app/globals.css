@@ -1,17 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  --paper: #f4f2ec;
-  --card: #ffffff;
-  --line: #e3e0d8;
-  --ink: #15161a;
-  --muted: #6b6860;
-  --yes: #2459ff;
-  --yes-soft: #e8eeff;
-  --no: #ff5a1f;
-  --no-soft: #ffede5;
-  --lime: #d7ff3d;
-  --devnet: #ffb800;
+  /* Reborn "ash & ember" palette: dark by design. */
+  --paper: #0c0a09;
+  --card: #171210;
+  --line: #2b211d;
+  --ink: #1f1714;
+  --fg: #f5ede4;
+  --muted: #9c8e84;
+  --yes: #22d39a;
+  --yes-soft: #0e2a21;
+  --no: #ff4d6a;
+  --no-soft: #2e1219;
+  --flame: #ffb02e;
+  --devnet: #38d6f5;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -19,23 +22,46 @@
   --color-card: var(--card);
   --color-line: var(--line);
   --color-ink: var(--ink);
+  --color-fg: var(--fg);
   --color-muted: var(--muted);
   --color-yes: var(--yes);
   --color-yes-soft: var(--yes-soft);
   --color-no: var(--no);
   --color-no-soft: var(--no-soft);
-  --color-lime: var(--lime);
+  --color-flame: var(--flame);
   --color-devnet: var(--devnet);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-bricolage);
+  --font-sans: var(--font-manrope);
+  --font-mono: var(--font-jetbrains);
+  --font-display: var(--font-unbounded);
 }
 
 body {
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--font-geist-sans), sans-serif;
+  background:
+    radial-gradient(900px 500px at 85% -10%, rgba(255, 106, 26, 0.16), transparent 60%),
+    radial-gradient(700px 400px at -10% 110%, rgba(255, 77, 106, 0.1), transparent 60%),
+    var(--paper);
+  background-attachment: fixed;
+  color: var(--fg);
+  font-family: var(--font-manrope), sans-serif;
 }
+
+/* Ash grid: faint burnt blueprint behind everything. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(245, 237, 228, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 237, 228, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, black, transparent 80%);
+}
+
+/* Raised dark surfaces get an ember edge so they read on the dark page. */
+.bg-ink { box-shadow: inset 0 0 0 1px rgba(255, 176, 46, 0.14); }
+.bg-card { box-shadow: inset 0 0 0 1px var(--line); }
 
 /* Motion: short, purposeful, off for reduced-motion users. */
 @keyframes draw {
@@ -106,8 +132,13 @@ body {
 .reborn-rise { animation: phoenix-rise 3.2s ease-in-out infinite; }
 .reborn-flare { animation: flare 3.2s ease-in-out infinite; }
 .reborn-glow { box-shadow: 0 0 0 0 rgba(255, 90, 31, 0.5); animation: flare 2.4s ease-in-out infinite; }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee { animation: marquee 28s linear infinite; }
 .reborn-title {
-  background: linear-gradient(95deg, #d7ff3d 0%, #ff5a1f 55%, #ffb800 100%);
+  background: linear-gradient(95deg, #ffd84d 0%, #ffb02e 30%, #ff6a1a 60%, #ff4d6a 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
