@@ -50,7 +50,7 @@ Some folders appear as the hackathon progresses; check git log.
 
 Instructions (first data byte): `0 create_market`, `1 place_bet`, `2 resolve`, `3 claim`, `4 void`. Fee 2%, max bet 1 SOL — constants in the program.
 Devnet e2e check: `cd packages/sdk && HELIUS_API_KEY=… KEYPAIR=… pnpm smoke`.
-Seed markets: `pnpm seed`, then push them into Neon: `APP_URL=… pnpm reindex` (same env).
+Season 2 markets + crowd: `CROWD=30 FUND=0.09 APP_URL=… pnpm crowd` (same env) — voids old markets, opens fresh ones, funds devnet wallets from the admin (keys in `keys/crowd.json`, gitignored) and places real micro-bets, each indexed into Neon.
 
 Program ID (devnet): `HqSA9nbfscPV8x3Md7wxW7o1wJp2Y8QDnP8ueGeEgJqa`
 Deployer / admin wallet: `BK4Tt9kZfazEs3DRzyygpDKP4mN7PyuWduUEJStUPRHc`

@@ -1,16 +1,29 @@
 "use client";
 
+import { useWallet } from "@solana/wallet-adapter-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 import { ShareCard } from "@/components/share-card";
-import { getMarket, positions, wallet } from "@/lib/markets";
+import { shortAddr, solscanTx } from "@/lib/markets";
 
 export default function WinPage() {
+  return (
+    <Suspense>
+      <Win />
+    </Suspense>
+  );
+}
+
+function Win() {
   const [note, setNote] = useState("");
   const [shown, setShown] = useState(0);
-  const pos = positions.find((p) => p.claimable)!;
-  const m = getMarket(pos.marketId)!;
-  const payout = pos.claimable!;
+  const qs = useSearchParams();
+  const { publicKey } = useWallet();
+  const m = { id: qs.get("m") ?? "", question: qs.get("q") ?? "Your market" };
+  const pos = { side: qs.get("side") === "no" ? "no" : "yes", stake: Number(qs.get("stake")) || 0.01 };
+  const sig = qs.get("sig");
+  const payout = Number(qs.get("payout")) || pos.stake;
   const profit = payout - pos.stake;
   const pnl = Math.round((profit / pos.stake) * 100);
   const odds = payout / pos.stake;
@@ -67,9 +80,16 @@ export default function WinPage() {
       </div>
       <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-8 px-6 pt-8 md:flex-row md:items-center md:gap-12 md:pt-16">
         <div className="flex flex-col gap-2.5 md:w-[380px] md:shrink-0">
-          <span className="text-sm text-[#A8988C]">Claimed to {wallet.short}</span>
+          <span className="text-sm text-[#A8988C]">
+            Claimed to {publicKey ? shortAddr(publicKey.toBase58()) : "your wallet"}
+            {sig && (
+              <a href={solscanTx(sig)} target="_blank" rel="noreferrer" className="ml-2 text-flame underline">
+                Solscan ↗
+              </a>
+            )}
+          </span>
           <h1 className="font-display text-[46px] font-extrabold leading-[0.95] tracking-tighter md:text-6xl">You called it.</h1>
-          <span className="font-display text-[64px] font-extrabold leading-none tracking-tighter text-flame tabular-nums">+{shown.toFixed(2)} SOL</span>
+          <span className="font-display text-[64px] font-extrabold leading-none tracking-tighter text-flame tabular-nums">+{shown.toFixed(3)} SOL</span>
           <span className="font-mono text-sm text-flame">
             +{pnl}% · you were in the {calledAt}%
           </span>
@@ -82,11 +102,11 @@ export default function WinPage() {
             question={m.question}
             side={pos.side === "yes" ? "Yes" : "No"}
             odds={`${odds.toFixed(2)}×`}
-            profit={`+${profit.toFixed(2)} SOL`}
+            profit={`+${profit.toFixed(3)} SOL`}
             pnl={`+${pnl}%`}
             calledAt={`${calledAt}% chance`}
-            stake={`${pos.stake.toFixed(2)} SOL`}
-            payout={`${payout.toFixed(2)} SOL`}
+            stake={`${pos.stake.toFixed(3)} SOL`}
+            payout={`${payout.toFixed(3)} SOL`}
           />
         </div>
         <div className="flex flex-col gap-2.5 md:hidden">

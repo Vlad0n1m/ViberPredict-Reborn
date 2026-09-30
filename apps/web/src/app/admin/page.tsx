@@ -2,10 +2,10 @@
 
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { backend, type ProgramConfig, type Stats, type TxResult } from "@/lib/backend";
-import { chance, sol, total, type Market, type MarketStatus, type Side } from "@/lib/markets";
+import { useBackend, type ProgramConfig, type Stats, type TxResult } from "@/lib/backend";
+import { chance, shortAddr, sol, total, type Market, type MarketStatus } from "@/lib/markets";
 
-type Row = Market & { outcome?: Side | "void" };
+type Row = Market;
 type Filter = "all" | MarketStatus;
 
 const statusStyle: Record<MarketStatus, { label: string; dot: string; chip: string }> = {
@@ -25,6 +25,7 @@ export default function AdminPage() {
   const [toast, setToast] = useState<string | null>(null);
   const { publicKey } = useWallet();
   const me = publicKey?.toBase58();
+  const backend = useBackend();
 
   const load = useCallback(async () => {
     const [m, c, s] = await Promise.all([backend.getMarkets(), backend.getConfig(), backend.getStats()]);
@@ -32,7 +33,7 @@ export default function AdminPage() {
     setConfig(c);
     setDraft((d) => d ?? c);
     setStats(s);
-  }, []);
+  }, [backend]);
 
   useEffect(() => {
     load();
@@ -72,8 +73,8 @@ export default function AdminPage() {
         </div>
         <div className="flex flex-wrap gap-2 text-[13px] font-medium">
           <span className="flex items-center gap-2 rounded-md bg-card px-3.5 py-2">
-            <span className={`live-dot h-2 w-2 ${backend.kind === "mock" ? "bg-devnet" : "bg-[#22D39A]"}`} />
-            {backend.kind === "mock" ? "Mock backend" : "On-chain"}
+            <span className={`live-dot h-2 w-2 $bg-[#22D39A]`} />
+            On-chain · devnet
           </span>
           <span className="flex items-center gap-2 rounded-md bg-card px-3.5 py-2">
             <span className={`live-dot h-2 w-2 ${config?.paused ? "bg-no" : "bg-[#22D39A]"}`} />
@@ -106,7 +107,7 @@ export default function AdminPage() {
                 <div className="flex flex-1 flex-col gap-1">
                   <span className="text-[15px] font-medium leading-snug">{m.question}</span>
                   <span className="font-mono text-xs text-muted">
-                    {chance(m)}% yes · {sol(total(m))} SOL · by {m.creator} · {m.source}
+                    {chance(m)}% yes · {sol(total(m))} SOL · by {shortAddr(m.creator)} · {m.source}
                   </span>
                 </div>
                 <div className="grid grid-cols-3 gap-2 sm:flex">
@@ -126,7 +127,8 @@ export default function AdminPage() {
         </div>
 
         <div className="flex flex-col gap-4 rounded-lg bg-ink p-5 text-white">
-          <h2 className="font-display text-xl font-extrabold tracking-tight">Program config</h2>
+          <h2 className="font-display text-xl font-extrabold tracking-tight">Program constants</h2>
+          <p className="-mt-2 text-xs text-[#A8988C]">Compiled into the on-chain program. Changing them means a redeploy.</p>
           {draft && (
             <>
               <Field label="Fee, basis points" hint={`${(draft.feeBps / 100).toFixed(2)}% — half to creator, half to treasury`}>
@@ -181,7 +183,7 @@ export default function AdminPage() {
                   onClick={() => run("config", "Config updated", () => backend.updateConfig(draft))}
                   className="bg-flame text-ink"
                 >
-                  Save on-chain
+                  Read-only
                 </Btn>
               </div>
             </>
@@ -240,7 +242,7 @@ export default function AdminPage() {
                 {st.label}
               </span>
               <span className="font-mono text-sm md:text-right">{sol(total(m))} SOL</span>
-              <span className="text-right font-mono text-sm text-[#17A877]">{chance(m)}%</span>
+              <span className="text-right font-mono text-sm text-yes">{chance(m)}%</span>
               <span className="col-span-2 flex justify-end md:col-span-1">
                 {m.status !== "resolved" ? (
                   <Btn

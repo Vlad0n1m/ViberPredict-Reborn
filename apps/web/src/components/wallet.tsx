@@ -49,7 +49,12 @@ export function useBalance() {
   useEffect(() => {
     refresh();
     const id = setInterval(refresh, 15000);
-    return () => clearInterval(id);
+    const onTx = () => setTimeout(refresh, 800);
+    window.addEventListener("reborn:tx", onTx);
+    return () => {
+      clearInterval(id);
+      window.removeEventListener("reborn:tx", onTx);
+    };
   }, [refresh]);
 
   return { balance, refresh };

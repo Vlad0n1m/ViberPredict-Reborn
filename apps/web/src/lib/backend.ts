@@ -1,8 +1,12 @@
-// Single data layer for the UI. Today it runs on in-memory mocks; when the Anchor program
-// and packages/sdk land, implement `Backend` with RPC reads + wallet-signed transactions
-// and flip NEXT_PUBLIC_BACKEND=chain. Pages and the admin panel only talk to this interface.
+"use client";
 
-import { FEE, MAX_BET, markets as seed, total, type Market, type MarketStatus, type Side } from "./markets";
+// Admin data layer on the live program: reads via /api/markets, writes signed by the connected wallet.
+import { useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
+import { ADMIN, FEE_BPS, TREASURY, resolveIx, voidIx } from "@reborn/sdk";
+import { useMemo } from "react";
+import { useSendTx } from "./chain-client";
+import { MAX_BET, fromApi, total, type ApiMarket, type Market, type Side } from "./markets";
 
 export type ProgramConfig = {
   admin: string;
@@ -24,80 +28,59 @@ export type Stats = {
 export type TxResult = { ok: true; signature: string } | { ok: false; error: string };
 
 export interface Backend {
-  kind: "mock" | "chain";
+  kind: "chain";
   getMarkets(): Promise<Market[]>;
   getConfig(): Promise<ProgramConfig>;
   getStats(): Promise<Stats>;
   updateConfig(patch: Partial<Omit<ProgramConfig, "admin">>): Promise<TxResult>;
   resolveMarket(id: string, outcome: Side): Promise<TxResult>;
   voidMarket(id: string): Promise<TxResult>;
-  placeBet(id: string, side: Side, sol: number): Promise<TxResult>;
-  createMarket(input: { question: string; closesIn: string; source: string }): Promise<TxResult>;
 }
 
-type Resolved = Market & { outcome?: Side | "void" };
+const config: ProgramConfig = {
+  admin: ADMIN.toBase58(),
+  treasury: TREASURY.toBase58(),
+  feeBps: FEE_BPS,
+  maxBetSol: MAX_BET,
+  paused: false,
+};
 
-const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
-const fakeSig = () => Array.from({ length: 12 }, () => "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"[Math.floor(Math.random() * 58)]).join("");
-
-function createMockBackend(): Backend {
-  let list: Resolved[] = seed.map((m) => ({ ...m }));
-  let config: ProgramConfig = {
-    admin: "BK4Tt9kZfazEs3DRzyygpDKP4mN7PyuWduUEJStUPRHc",
-    treasury: "BK4Tt9kZfazEs3DRzyygpDKP4mN7PyuWduUEJStUPRHc",
-    feeBps: FEE * 10000,
-    maxBetSol: MAX_BET,
-    paused: false,
-  };
-  const tx = async (fn: () => void): Promise<TxResult> => {
-    await wait(700);
-    fn();
-    return { ok: true, signature: fakeSig() };
-  };
-  const setStatus = (id: string, status: MarketStatus, outcome?: Side | "void") => {
-    list = list.map((m) => (m.id === id ? { ...m, status, outcome } : m));
-  };
-
-  return {
-    kind: "mock",
-    async getMarkets() {
-      await wait(150);
-      return list;
-    },
-    async getConfig() {
-      await wait(100);
-      return config;
-    },
-    async getStats() {
-      await wait(100);
-      const tvl = list.filter((m) => m.status !== "resolved").reduce((s, m) => s + total(m), 0);
-      const done = list.filter((m) => m.status === "resolved");
-      return {
-        tvl,
-        active: list.filter((m) => m.status === "active").length,
-        awaiting: list.filter((m) => m.status === "awaiting").length,
-        resolved: done.length,
-        bettors: list.reduce((s, m) => s + m.bettors, 0),
-        feesEarned: done.reduce((s, m) => s + total(m) * (config.feeBps / 20000), 0),
-      };
-    },
-    updateConfig: (patch) => tx(() => (config = { ...config, ...patch })),
-    resolveMarket: (id, outcome) => tx(() => setStatus(id, "resolved", outcome)),
-    voidMarket: (id) => tx(() => setStatus(id, "resolved", "void")),
-    placeBet: (id, side, sol) =>
-      tx(() => {
-        list = list.map((m) =>
-          m.id === id ? { ...m, yesPool: m.yesPool + (side === "yes" ? sol : 0), noPool: m.noPool + (side === "no" ? sol : 0), bettors: m.bettors + 1 } : m,
-        );
-      }),
-    createMarket: ({ question, closesIn, source }) =>
-      tx(() => {
-        list = [
-          { id: `m-${Date.now()}`, question, closesIn, source, tag: "New", yesPool: 0, noPool: 0, bettors: 0, creator: "BK4T…PRHc", status: "active" },
-          ...list,
-        ];
-      }),
-  };
+async function markets() {
+  const r = await fetch("/api/markets", { cache: "no-store" });
+  return ((await r.json()).markets as ApiMarket[]).map((m) => fromApi(m));
 }
 
-export const backend: Backend = createMockBackend();
+export function useBackend(): Backend {
+  const send = useSendTx();
+  const { publicKey } = useWallet();
+  return useMemo(() => {
+    const tx = async (build: (me: PublicKey) => Parameters<typeof send>[0]): Promise<TxResult> => {
+      try {
+        if (!publicKey) throw new Error("Connect the admin wallet");
+        return { ok: true, signature: await send(build(publicKey)) };
+      } catch (e) {
+        return { ok: false, error: (e as Error).message };
+      }
+    };
+    return {
+      kind: "chain",
+      getMarkets: markets,
+      getConfig: async () => config,
+      async getStats() {
+        const list = await markets();
+        const done = list.filter((m) => m.status === "resolved" && m.outcome !== "void");
+        return {
+          tvl: list.filter((m) => m.status !== "resolved").reduce((s, m) => s + total(m), 0),
+          active: list.filter((m) => m.status === "active").length,
+          awaiting: list.filter((m) => m.status === "awaiting").length,
+          resolved: done.length,
+          bettors: list.reduce((s, m) => s + m.bettors, 0),
+          feesEarned: done.reduce((s, m) => s + total(m) * (FEE_BPS / 20000), 0),
+        };
+      },
+      updateConfig: async () => ({ ok: false, error: "Fee, max bet and treasury are compiled into the program — redeploy to change them." }),
+      resolveMarket: (id, outcome) => tx((me) => [resolveIx(me, new PublicKey(id), outcome)]),
+      voidMarket: (id) => tx((me) => [voidIx(me, new PublicKey(id))]),
+    };
+  }, [publicKey, send]);
+}

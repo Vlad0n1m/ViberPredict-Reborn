@@ -1,22 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ClosingRow, MarketCard, Sparkline } from "@/components/market";
 import { RebornBanner } from "@/components/reborn";
-import { categories, chance, markets, multiplier, sol, total } from "@/lib/markets";
+import { useMarket, useMarkets } from "@/lib/chain-client";
+import { categories, chance, multiplier, sol, total, type Market } from "@/lib/markets";
 
 export default function Home() {
   const [cat, setCat] = useState("Trending");
-  const featured = markets[0];
+  const { markets } = useMarkets();
+  const featuredId = useMemo(() => pickFeatured(markets)?.id, [markets]);
+  const { market: featuredLive } = useMarket(featuredId);
+
+  if (!markets) return <Loading />;
+  const live = markets.filter((m) => m.status === "active");
+  const featured = featuredLive ?? pickFeatured(markets);
+  if (!featured) return <Loading />;
   const c = chance(featured);
-  const hist = featured.history ?? [];
+  const hist = featured.history ?? [50, c];
   const delta = hist.length > 1 ? hist[hist.length - 1] - hist[Math.max(0, hist.length - 8)] : 0;
-  const hackathon = markets.filter((m) => m.tag === "Hackathon" && m.id !== featured.id && m.status === "active");
+  const hackathon = live.filter((m) => m.tag === "Hackathon" && m.id !== featured.id);
   const hackPool = hackathon.reduce((s, m) => s + total(m), 0);
-  const snow = markets.find((m) => m.id === "astana-snow")!;
-  const closing = ["pitch-over-2", "judges-seeker", "mobile-wins", "wallets-100"].map((id) => markets.find((m) => m.id === id)!);
-  const all = markets.filter((m) => m.status === "active" && m.tag !== "Hackathon").sort((a, b) => total(b) - total(a));
+  const side = live.find((m) => m.tag === "Kazakhstan") ?? live.find((m) => m.id !== featured.id) ?? featured;
+  const closing = [...live].sort((a, b) => a.endTs - b.endTs).slice(0, 4);
+  const all = [...live].sort((a, b) => total(b) - total(a));
 
   return (
     <main className="mx-auto flex w-full max-w-[1344px] flex-col gap-7 px-4 sm:px-8 lg:px-12">
@@ -42,7 +50,7 @@ export default function Home() {
       </nav>
 
       {cat !== "Trending" ? (
-        <Filtered cat={cat} />
+        <Filtered cat={cat} markets={markets} />
       ) : (
       <>
       <section className="grid gap-4 lg:grid-cols-3">
@@ -62,9 +70,9 @@ export default function Home() {
             <div className="flex items-baseline gap-2.5">
               <span className="font-display text-5xl font-extrabold leading-none tracking-tighter text-flame sm:text-[64px]">{c}%</span>
               <span className="text-sm text-[#A8988C]">chance</span>
-              <span className="font-mono text-sm text-flame">▲ {delta} today</span>
+              <span className="font-mono text-sm text-flame">{delta >= 0 ? "▲" : "▼"} {Math.abs(delta)} recent</span>
             </div>
-            <Sparkline points={hist} className="h-28 w-full lg:hidden" />
+            <Sparkline key={`m${hist.length}`} points={hist} className="h-28 w-full lg:hidden" />
             <div className="mt-auto grid grid-cols-2 gap-2.5 font-semibold">
               <span className="flex h-14 items-center justify-between rounded-md bg-yes px-4 text-ink">
                 Buy Yes <span className="font-mono text-[13px]">{multiplier(featured, "yes").toFixed(2)}×</span>
@@ -76,12 +84,12 @@ export default function Home() {
           </div>
           <div className="hidden flex-1 flex-col gap-2.5 lg:flex">
             <div className="flex justify-between font-mono text-xs text-[#A8988C]">
-              <span>{sol(total(featured))} SOL · {featured.bettors} bettors</span>
+              <span>{sol(total(featured), 3)} SOL · {featured.bettors} bettors</span>
               <span>1H · 6H · <span className="text-white">ALL</span></span>
             </div>
-            <Sparkline points={hist} className="w-full flex-1" />
+            <Sparkline key={`d${hist.length}`} points={hist} className="w-full flex-1" />
             <div className="flex justify-between font-mono text-[11px] text-[#6F625A]">
-              <span>17:00</span><span>17:40</span><span>18:20</span><span>now</span>
+              <span>first bet</span><span>{hist.length - 1} bets</span><span>now</span>
             </div>
           </div>
         </Link>
@@ -92,7 +100,7 @@ export default function Home() {
               <circle cx="80" cy="80" r="70" fill="none" stroke="#0C0A09" strokeWidth="2" strokeDasharray="6 8" />
               <circle cx="80" cy="80" r="40" fill="#0C0A09" />
             </svg>
-            <span className="text-xs font-bold tracking-wide">EVENT · TONIGHT</span>
+            <span className="text-xs font-bold tracking-wide">EVENT · TONIGHT · LIVE</span>
             <p className="max-w-[240px] font-display text-3xl font-extrabold leading-none tracking-tight">Pitch Night Astana</p>
             <div className="mt-auto flex flex-col gap-1.5 text-[13px]">
               {hackathon.slice(0, 2).map((m) => (
@@ -102,18 +110,18 @@ export default function Home() {
                 </div>
               ))}
               <div className="flex justify-between font-semibold">
-                <span>{hackathon.length + 1} markets →</span>
-                <span className="font-mono">{sol(hackPool + total(featured), 1)} SOL</span>
+                <span>{hackathon.length + (featured.tag === "Hackathon" ? 1 : 0)} markets →</span>
+                <span className="font-mono">{sol(hackPool + (featured.tag === "Hackathon" ? total(featured) : 0), 2)} SOL</span>
               </div>
             </div>
           </Link>
-          <Link href={`/market/${snow.id}`} className="relative flex min-h-[170px] flex-col gap-2 overflow-hidden rounded-lg bg-yes px-6 py-5 text-ink sm:rounded-lg">
+          <Link href={`/market/${side.id}`} className="relative flex min-h-[170px] flex-col gap-2 overflow-hidden rounded-lg bg-yes px-6 py-5 text-ink sm:rounded-lg">
             <svg width="140" height="140" viewBox="0 0 140 140" className="absolute -bottom-10 -right-5" aria-hidden>
               <path d="M70 10l12 40h40l-32 24 12 40-32-24-32 24 12-40-32-24h40z" fill="none" stroke="#0C0A09" strokeOpacity="0.35" strokeWidth="2" />
             </svg>
-            <span className="text-xs font-black tracking-wide text-ink/70">ASTANA · WEATHER</span>
-            <p className="max-w-[250px] font-display text-2xl font-extrabold leading-tight tracking-tight">First snow before Oct 15?</p>
-            <span className="mt-auto font-mono text-sm">{chance(snow)}% yes · {sol(total(snow), 1)} SOL</span>
+            <span className="text-xs font-black uppercase tracking-wide text-ink/70">{side.tag} · closes in {side.closesIn}</span>
+            <p className="max-w-[260px] font-display text-xl font-extrabold leading-tight tracking-tight">{side.question}</p>
+            <span className="mt-auto font-mono text-sm">{chance(side)}% yes · {sol(total(side), 2)} SOL</span>
           </Link>
         </div>
       </section>
@@ -133,7 +141,7 @@ export default function Home() {
       <section className="flex flex-col gap-3">
         <div className="flex items-baseline justify-between">
           <h2 className="font-display text-2xl font-extrabold tracking-tight">All markets</h2>
-          <span className="text-[13px] text-muted">Sorted by pool size</span>
+          <span className="text-[13px] text-muted">{all.length} live · sorted by pool</span>
         </div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 lg:gap-4">
           {all.map((m, i) => (
@@ -147,8 +155,26 @@ export default function Home() {
   );
 }
 
-function Filtered({ cat }: { cat: string }) {
-  const list = cat === "New" ? [...markets].reverse() : markets.filter((m) => m.tag === cat);
+function pickFeatured(markets: Market[] | undefined) {
+  const live = (markets ?? []).filter((m) => m.status === "active");
+  const pool = live.filter((m) => m.tag === "Hackathon").length ? live.filter((m) => m.tag === "Hackathon") : live;
+  return [...pool].sort((a, b) => total(b) - total(a))[0] ?? markets?.[0];
+}
+
+function Loading() {
+  return (
+    <main className="mx-auto flex w-full max-w-[1344px] flex-col gap-7 px-4 sm:px-8 lg:px-12">
+      <RebornBanner />
+      <div className="grid gap-4 lg:grid-cols-3">
+        <div className="h-80 animate-pulse rounded-lg bg-card lg:col-span-2" />
+        <div className="h-80 animate-pulse rounded-lg bg-card" />
+      </div>
+    </main>
+  );
+}
+
+function Filtered({ cat, markets }: { cat: string; markets: Market[] }) {
+  const list = cat === "New" ? [...markets].sort((a, b) => b.createdTs - a.createdTs) : markets.filter((m) => m.tag === cat);
   return (
     <section key={cat} className="flex flex-col gap-3">
       <div className="flex items-baseline justify-between">

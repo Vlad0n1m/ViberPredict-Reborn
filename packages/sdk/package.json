@@ -8,7 +8,8 @@
   "scripts": {
     "smoke": "tsx test/smoke.mts",
     "seed": "tsx scripts/seed.mts",
-    "reindex": "tsx scripts/reindex.mts"
+    "reindex": "tsx scripts/reindex.mts",
+    "crowd": "tsx scripts/crowd.mts"
   },
   "peerDependencies": {
     "@solana/web3.js": "^1.98.0"
