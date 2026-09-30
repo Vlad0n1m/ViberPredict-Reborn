@@ -1,0 +1,7 @@
+.env*
+!.env.example
+node_modules
+target
+keys/
+.DS_Store
+.vercel

@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #f4f2ec;
+  --card: #ffffff;
+  --line: #e3e0d8;
+  --ink: #15161a;
+  --muted: #6b6860;
+  --yes: #2459ff;
+  --yes-soft: #e8eeff;
+  --no: #ff5a1f;
+  --no-soft: #ffede5;
+  --lime: #d7ff3d;
+  --devnet: #ffb800;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-card: var(--card);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-yes: var(--yes);
+  --color-yes-soft: var(--yes-soft);
+  --color-no: var(--no);
+  --color-no-soft: var(--no-soft);
+  --color-lime: var(--lime);
+  --color-devnet: var(--devnet);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-bricolage);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), sans-serif;
+}
+
+/* Motion: short, purposeful, off for reduced-motion users. */
+@keyframes draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes grow-x {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes ping {
+  0% { transform: scale(1); opacity: 0.7; }
+  80%, 100% { transform: scale(2.6); opacity: 0; }
+}
+@keyframes ring {
+  0% { r: 6; opacity: 0.8; }
+  100% { r: 22; opacity: 0; }
+}
+@keyframes confetti {
+  0% { transform: translateY(-40px) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(260px) rotate(320deg); opacity: 0; }
+}
+
+.anim-draw { stroke-dasharray: 1; animation: draw 1.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-fade { animation: fade-in 0.9s ease-out 0.5s both; }
+.anim-rise { animation: rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-grow { transform-origin: left; animation: grow-x 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-ring { animation: ring 1.8s ease-out infinite; }
+.anim-confetti { animation: confetti 2.4s cubic-bezier(0.3, 0.6, 0.5, 1) both; }
+
+/* Glowing status light: a solid dot with a soft expanding halo. */
+.live-dot { position: relative; display: inline-block; border-radius: 9999px; }
+.live-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  animation: ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Reborn: the phoenix breathes, the title burns. */
+@keyframes phoenix-rise {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.03); }
+}
+@keyframes flare {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+.reborn-rise { animation: phoenix-rise 3.2s ease-in-out infinite; }
+.reborn-flare { animation: flare 3.2s ease-in-out infinite; }
+.reborn-glow { box-shadow: 0 0 0 0 rgba(255, 90, 31, 0.5); animation: flare 2.4s ease-in-out infinite; }
+.reborn-title {
+  background: linear-gradient(95deg, #d7ff3d 0%, #ff5a1f 55%, #ffb800 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
