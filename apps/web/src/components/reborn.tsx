@@ -20,7 +20,7 @@ export function RebornBanner() {
         <h1 className="font-display font-black uppercase leading-[0.88] tracking-tight">
           <span className="block text-[26px] text-fg sm:text-[44px]">We are back</span>
           <span className="block text-[26px] text-fg sm:text-[44px]">to business!</span>
-          <span className="reborn-title mt-2 block text-[58px] sm:text-[112px] lg:text-[136px]">Reborn</span>
+          <span className="reborn-title mt-2 block text-[50px] sm:text-[112px] lg:text-[136px]">Reborn</span>
         </h1>
 
         <p className="max-w-[580px] text-[15px] leading-relaxed text-[#CFC2B6] sm:text-lg">
